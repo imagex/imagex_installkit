@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * @file
+ * Entity Dependency tests.
+ */
+
+/**
+ * Tests the entity dependency iterator.
+ */
+class EntityDependencyTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Entity dependency iterator',
+      'description' => 'Test the EntityDependencyIterator class.',
+      'group' => 'Entity Dependency'
+    );
+  }
+
+  function setUp() {
+    parent::setUp('entity_dependency');
+  }
+
+  /**
+   * Helper method to return the iterator.
+   */
+  function getIterator() {
+    return entity_dependency_iterator($this->entities);
+  }
+
+  /**
+   * Code taken from TaxonomyWebTestCase::createTerm() since we can't extend
+   * that test case. Some simplifications are made though.
+   *
+   * @todo
+   *   This will probably not work when the Testing profile is used. Then we
+   *   need to create the vocabulary manually.
+   *
+   * @see TaxonomyWebTestCase::createTerm()
+   */
+  function createTerm() {
+    $term = new stdClass();
+    $term->name = $this->randomName();
+    $term->description = $this->randomName();
+    // Use the first available text format.
+    $term->format = db_query_range('SELECT format FROM {filter_format}', 0, 1)->fetchField();
+    // For our test cases it's enough to rely on the standard 'tags' vocabulary.
+    $term->vid = 1;
+    taxonomy_term_save($term);
+    return $term;
+  }
+
+  function testIterator() {
+    // Add the 'field_tags' field.
+    $user = $this->drupalCreateUser();
+    $term1 = $this->createTerm();
+    $term2 = $this->createTerm();
+    $node1 = $this->drupalCreateNode(array(
+      'type' => 'article',
+      'uid' => $user->uid,
+      'field_tags' => array(LANGUAGE_NONE => array(array('tid' => $term1->tid), array('tid' => $term2->tid))),
+    ));
+    $node2 = $this->drupalCreateNode(array(
+      'type' => 'article',
+      'uid' => $user->uid,
+      // We fake that nid 1 is the translation of this node, just to test if
+      // the dependency works. We don't want to depend on a node reference.
+      'tnid' => $node1->nid,
+      'field_tags' => array(LANGUAGE_NONE => array(array('tid' => $term2->tid))),
+    ));
+    // This node only has dependencies that should be detected by $node2
+    // already.
+    $node3 = $this->drupalCreateNode(array(
+      'type' => 'article',
+      'uid' => $user->uid,
+      'field_tags' => array(LANGUAGE_NONE => array(array('tid' => $term1->tid), array('tid' => $term2->tid))),
+    ));
+
+    // Add only the last node to the collection. What should come out of the
+    // iterator should be all it's dependencies, and last the node it self.
+    $this->entities = array(
+      'node' => array($node2->nid, $node3->nid),
+    );
+ 
+    $i = 0;
+    foreach ($this->getIterator() as $entity) {
+      $test = FALSE;
+      $entity_type = $entity->__metadata['type'];
+      switch ($i) {
+        case 0:
+          $entity_id = $entity->tid;
+          $test = ($entity_type == 'taxonomy_term' && $entity_id == $term2->tid);
+          break;
+        case 1:
+          $entity_id = $entity->uid;
+          $test = ($entity_type == 'user' && $entity_id == $user->uid);
+          break;
+        case 2:
+          $entity_id = $entity->tid;
+          $test = ($entity_type == 'taxonomy_term' && $entity_id == $term1->tid);
+          break;
+        case 3:
+          $entity_id = $entity->nid;
+          $test = ($entity_type == 'node' && $entity_id == $node1->nid);
+          break;
+        case 4:
+          $entity_id = $entity->nid;
+          $test = ($entity_type == 'node' && $entity_id == $node2->nid);
+          break;
+        case 5:
+          $entity_id = $entity->nid;
+          $test = ($entity_type == 'node' && $entity_id == $node3->nid);
+          break;
+      }
+      $placeholders = array('%entity_type' => $entity_type, '%entity_id' => $entity_id);
+      $this->assertTrue($test, t('%entity_type %entity_id was iterated over, in correct order.', $placeholders));
+      $i++;
+    }
+    $this->assertEqual($i, 6, 'Correct number of entities was iterated over.');
+  }
+}

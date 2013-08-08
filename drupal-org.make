@@ -82,7 +82,9 @@ projects[views][subdir] = "contrib"
 projects[views][version] = "3.7"
 
 ; Contributed themes.
+projects[mothership][type] = "theme"
+projects[mothership][version] = "2.10"
 projects[parrot][type] = "theme"
-projects[parrot][version] = "1.0-dev"
+projects[parrot][version] = "1.x-dev"
 
 ; Libraries.

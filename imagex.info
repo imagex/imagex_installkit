@@ -5,7 +5,7 @@ version = 7.x-dev
 
 ; Ensure that the ImageX install profile is exclusive, the one that should be auto selected.
 ; Note: Should other installation profiles have this option set, the default install select will be displayed.
-exclusive = TRUE
+; exclusive = TRUE
 
 ; Files
 files[] = includes/ImagexInstallTask.inc
@@ -34,7 +34,7 @@ dependencies[] = file
 dependencies[] = rdf
 
 ; Drupal contrib modules to be installed and enabled.
-dependencies[] = admin_menu
+; dependencies[] = admin_menu
 dependencies[] = admin_views
 dependencies[] = backup_migrate
 dependencies[] = bean
@@ -50,9 +50,9 @@ dependencies[] = entity
 dependencies[] = entity_dependency
 dependencies[] = entityreference
 dependencies[] = features
-dependencies[] = features_extra
 dependencies[] = field_collection
 dependencies[] = file_entity
+dependencies[] = libraries
 dependencies[] = panelizer
 dependencies[] = panels
 dependencies[] = pathauto
@@ -60,5 +60,6 @@ dependencies[] = token
 dependencies[] = uuid
 dependencies[] = uuid_features
 dependencies[] = views
+dependencies[] = views_bulk_operations
 
 ; ImageX modules to be installed and enabled.

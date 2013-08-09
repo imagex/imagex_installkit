@@ -1,0 +1,287 @@
+diff --git a/includes/common.inc b/includes/common.inc
+index 262e1c5..5523ada 100644
+--- a/includes/common.inc
++++ b/includes/common.inc
+@@ -232,6 +232,29 @@ function drupal_get_profile() {
+   return $profile;
+ }
+ 
++/**
++ * Gets the name of the currently active installation profile's base profile.
++ *
++ * When this function is called during the Drupal's initial installation process,
++ * the name of the base profile that's about to be installed is stored in the global
++ * installation state. At all other times, the standard Drupal systems variable table
++ * contains the name of the current profile's base profile, and we can call
++ * variable_get() to determine what it is.
++ *
++ * @return $base_profile
++ *   The name of the installation profile's base installation profile.
++ */
++function drupal_get_base_profile() {
++  global $install_state;
++  if (isset($install_state['parameters']['base_profile'])) {
++    $base_profile = $install_state['parameters']['base_profile'];
++  }
++  else {
++    $base_profile = variable_get('install_base_profile', NULL);
++  }
++
++  return $base_profile;
++}
+ 
+ /**
+  * Sets the breadcrumb trail for the current page.
+@@ -5349,6 +5372,7 @@ function drupal_system_listing($mask, $directory, $key = 'name', $min_depth = 1)
+   // there in favor of sites/all or sites/<domain> directories.
+   $profiles = array();
+   $profile = drupal_get_profile();
++
+   // For SimpleTest to be able to test modules packaged together with a
+   // distribution we need to include the profile of the parent site (in which
+   // test runs are triggered).
+@@ -5361,6 +5385,14 @@ function drupal_system_listing($mask, $directory, $key = 'name', $min_depth = 1)
+   // In case both profile directories contain the same extension, the actual
+   // profile always has precedence.
+   $profiles[] = $profile;
++
++  // In the event that the profile is inheriting a base profile, ensure that
++  // the base profile is added to the searchable directories.
++  $base_profile = drupal_get_base_profile();
++  if (!empty($base_profile)) {
++    $profiles[] = $base_profile;
++  }
++
+   foreach ($profiles as $profile) {
+     if (file_exists("profiles/$profile/$directory")) {
+       $searchdir[] = "profiles/$profile/$directory";
+diff --git a/includes/install.core.inc b/includes/install.core.inc
+index 7a694e9..dcdf1cf 100644
+--- a/includes/install.core.inc
++++ b/includes/install.core.inc
+@@ -162,6 +162,10 @@ function install_state_defaults() {
+     // An array of information about the chosen installation profile. This will
+     // be filled in based on the profile's .info file.
+     'profile_info' => array(),
++    // An array of information about the chosen installation profile's base.
++    // This will be filled in based on the profile's `base` property value
++    // if the base profile exists and its .info file.
++    'base_profile_info' => array(),
+     // An array of available installation profiles.
+     'profiles' => array(),
+     // An array of server variables that will be substituted into the global
+@@ -565,6 +569,21 @@ function install_tasks($install_state) {
+     ),
+   );
+ 
++  // Now add any tasks defined by the base installation profile, if one exists.
++  if (!empty($install_state['parameters']['base_profile'])) {
++    $base_profile_install_file = DRUPAL_ROOT . '/profiles/' . $install_state['parameters']['base_profile'] . '/' . $install_state['parameters']['profile'] . '.install';
++    if (file_exists($base_profile_install_file)) {
++      include_once $base_profile_install_file;
++    }
++    $function = $install_state['parameters']['base_profile'] . '_install_tasks';
++    if (function_exists($function)) {
++      $result = $function($install_state);
++      if (is_array($result)) {
++        $tasks += $result;
++      }
++    }
++  }
++
+   // Now add any tasks defined by the installation profile.
+   if (!empty($install_state['parameters']['profile'])) {
+     // Load the profile install file, because it is not always loaded when
+@@ -595,6 +614,18 @@ function install_tasks($install_state) {
+     ),
+   );
+ 
++  // All the base installation profile to modify the full list of tasks.
++  if (!empty($install_state['parameters']['base_profile'])) {
++    $base_profile_file = DRUPAL_ROOT . '/profiles/' . $install_state['parameters']['base_profile'] . '/' . $install_state['parameters']['base_profile'] . '.profile';
++    if (file_exists($base_profile_file)) {
++      include_once $base_profile_file;
++      $function = $install_state['parameters']['base_profile'] . '_install_tasks_alter';
++      if (function_exists($function)) {
++        $function($tasks, $install_state);
++      }
++    }
++  }
++
+   // Allow the installation profile to modify the full list of tasks.
+   if (!empty($install_state['parameters']['profile'])) {
+     $profile_file = DRUPAL_ROOT . '/profiles/' . $install_state['parameters']['profile'] . '/' . $install_state['parameters']['profile'] . '.profile';
+@@ -770,9 +801,21 @@ function install_system_module(&$install_state) {
+   // upcoming bootstrap step.
+   module_enable(array('user'), FALSE);
+ 
++  $base_profile = drupal_get_base_profile();
++  if (isset($base_profile)) {
++    $modules = $install_state['base_profile_info']['dependencies'];
++  }
++  else {
++    $modules = array();
++  }
++
+   // Save the list of other modules to install for the upcoming tasks.
+   // variable_set() can be used now that system.module is installed.
+-  $modules = $install_state['profile_info']['dependencies'];
++  $modules = array_merge($modules, $install_state['profile_info']['dependencies']);
++
++  if (isset($base_profile)) {
++    $modules[] = $base_profile;
++  }
+ 
+   // The installation profile is also a module, which needs to be installed
+   // after all the dependencies have been installed.
+@@ -1321,6 +1364,14 @@ function install_no_profile_error() {
+ }
+ 
+ /**
++ * Indicates that there are no base profile available.
++ */
++function install_no_base_profile_error() {
++  drupal_set_title(st('Base profile not available'));
++  return st('Cannot load base profile.');
++}
++
++/**
+  * Indicates that Drupal has already been installed.
+  */
+ function install_already_done_error() {
+@@ -1343,6 +1394,17 @@ function install_load_profile(&$install_state) {
+   if (file_exists($profile_file)) {
+     include_once $profile_file;
+     $install_state['profile_info'] = install_profile_info($install_state['parameters']['profile'], $install_state['parameters']['locale']);
++    if (isset($install_state['profile_info']['base'])) {
++      $base_profile_file = DRUPAL_ROOT . '/profiles/' . $install_state['profile_info']['base'] . '/' . $install_state['profile_info']['base'] . '.profile';
++      if (file_exists($base_profile_file)) {
++        include_once $base_profile_file;
++        $install_state['parameters']['base_profile'] = $install_state['profile_info']['base'];
++        $install_state['base_profile_info'] = install_profile_info($install_state['parameters']['base_profile']);
++      }
++      else {
++        throw new Exception(st('Sorry, the base profile specified cannot be loaded.'));
++      }
++    }
+   }
+   else {
+     throw new Exception(st('Sorry, the profile you have chosen cannot be loaded.'));
+@@ -1381,6 +1443,11 @@ function install_profile_modules(&$install_state) {
+   // every dependency, including non-required ones. So clear its required
+   // flag for now to allow it to install late.
+   $files[$install_state['parameters']['profile']]->info['required'] = FALSE;
++
++  if (isset($install_state['parameters']['base_profile'])) {
++    $files[$install_state['parameters']['base_profile']]->info['required'] = FALSE;
++  }
++
+   // Add modules that other modules depend on.
+   foreach ($modules as $module) {
+     if ($files[$module]->requires) {
+@@ -1539,6 +1606,9 @@ function install_finished(&$install_state) {
+   // registered by the installation profile are registered correctly.
+   drupal_flush_all_caches();
+ 
++  // If a base profile exists, remember which was used.
++  variable_set('install_base_profile', drupal_get_base_profile());
++
+   // Remember the profile which was used.
+   variable_set('install_profile', drupal_get_profile());
+ 
+@@ -1591,6 +1661,11 @@ function install_check_requirements($install_state) {
+   // Check the profile requirements.
+   $requirements = drupal_check_profile($profile);
+ 
++  // If a base profile exists, check the base profile's requirements.
++  if (isset($install_state['parameters']['base_profile'])) {
++    $requirements += drupal_check_profile($install_state['parameters']['base_profile']);
++  }
++
+   // If Drupal is not set up already, we need to create a settings file.
+   if (!$install_state['settings_verified']) {
+     $writable = FALSE;
+diff --git a/includes/install.inc b/includes/install.inc
+index 3631c36..99af96d 100644
+--- a/includes/install.inc
++++ b/includes/install.inc
+@@ -680,7 +680,18 @@ function drupal_verify_profile($install_state) {
+   if (!isset($profile) || !file_exists($profile_file)) {
+     throw new Exception(install_no_profile_error());
+   }
+-  $info = $install_state['profile_info'];
++  $dependencies = $install_state['profile_info']['dependencies'];
++
++  if (isset($install_state['parameters']['base_profile'])) {
++    $base_profile = $install_state['parameters']['base_profile'];
++    $base_profile_file = DRUPAL_ROOT . "/profiles/$base_profile/$base_profile.profile";
++    if (!file_exists($base_profile_file)) {
++      throw new Exception(install_no_base_profile_error());
++    }
++
++    $dependencies = array_merge($dependencies, $install_state['base_profile_info']['dependencies'], array($base_profile));
++    $dependencies = array_unique($dependencies);
++  }
+ 
+   // Get a list of modules that exist in Drupal's assorted subdirectories.
+   $present_modules = array();
+@@ -688,12 +699,18 @@ function drupal_verify_profile($install_state) {
+     $present_modules[] = $present_module->name;
+   }
+ 
++  // If a base profile exists, like other installation profiles it is also a
++  // module, which needs to be installed after other dependencies have.
++  if (isset($base_profile)) {
++    $present_modules[] = $base_profile;
++  }
++
+   // The installation profile is also a module, which needs to be installed
+   // after all the other dependencies have been installed.
+   $present_modules[] = drupal_get_profile();
+ 
+   // Verify that all of the profile's required modules are present.
+-  $missing_modules = array_diff($info['dependencies'], $present_modules);
++  $missing_modules = array_diff($dependencies, $present_modules);
+ 
+   $requirements = array();
+ 
+diff --git a/modules/system/system.module b/modules/system/system.module
+index 2bbcd7f..d29783a 100644
+--- a/modules/system/system.module
++++ b/modules/system/system.module
+@@ -2369,6 +2369,18 @@ function _system_rebuild_module_data() {
+   $modules[$profile]->uri = 'profiles/' . $profile . '/' . $profile . '.profile';
+   $modules[$profile]->filename = $profile . '.profile';
+ 
++  $base_profile = drupal_get_base_profile();
++  if (!empty($base_profile)) {
++    $modules[$base_profile] = new stdClass();
++    $modules[$base_profile]->name = $base_profile;
++    $modules[$base_profile]->uri = 'profiles/' . $base_profile . '/' . $base_profile . '.profile';
++    $modules[$base_profile]->filename = $base_profile . '.profile';
++
++    // Base installation profile hooks are always executed immediately prior
++    // to those of the $profile.
++    $modules[$base_profile]->weight = 999;
++  }
++
+   // Installation profile hooks are always executed last.
+   $modules[$profile]->weight = 1000;
+ 
+@@ -2422,6 +2434,16 @@ function _system_rebuild_module_data() {
+     drupal_alter('system_info', $modules[$key]->info, $modules[$key], $type);
+   }
+ 
++  if (isset($base_profile) && isset($modules[$base_profile])) {
++    // The base installation profile is required. if it's a valid module.
++    $modules[$base_profile]->info['required'] = TRUE;
++    // Add a default distribution name if the base profile did not provide one. This
++    // matches the default value used in the install_profile_info().
++    if (!isset($modules[$base_profile]->info['distribution_name'])) {
++      $modules[$base_profile]->info['distribution_name'] = 'Drupal';
++    }
++  }
++
+   if (isset($modules[$profile])) {
+     // The installation profile is required, if it's a valid module.
+     $modules[$profile]->info['required'] = TRUE;

@@ -60,6 +60,7 @@ dependencies[] = libraries
 dependencies[] = panelizer
 dependencies[] = panels
 dependencies[] = pathauto
+dependencies[] = strongarm
 dependencies[] = token
 dependencies[] = uuid
 dependencies[] = uuid_features

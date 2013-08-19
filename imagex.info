@@ -8,7 +8,10 @@ version = 7.x-dev
 ; exclusive = TRUE
 
 ; Files
+files[] = includes/install.inc
+files[] = includes/ImagexException.inc
 files[] = includes/ImagexInstallTask.inc
+files[] = includes/install/ImagexInstallModuleTask.inc
 
 ; Drupal core modules to be installed and enabled.
 dependencies[] = block

@@ -38,7 +38,7 @@ function imagex_load_include($type, $name) {
   if (function_exists('drupal_get_path')) {
     $file = DRUPAL_ROOT . '/' . drupal_get_path('profile', 'imagex') . '/' . $name . '.' . $type;
     if (is_file($file)) {
-      include_once $file;
+      require_once $file;
       return $file;
     }
   }
@@ -51,10 +51,8 @@ function imagex_load_include($type, $name) {
  */
 function imagex_install_tasks_alter(&$tasks, $install_state) {
   global $install_state;
-  if (empty($install_state['active_task']) && !$install_state['installation_finished']) {
-    imagex_load_include('inc', 'includes/install');
-    imagex_install_bootstrap($tasks, $install_state);
-  }
+  imagex_load_include('inc', 'includes/install');
+  imagex_install_bootstrap($tasks, $install_state);
 }
 
 /**

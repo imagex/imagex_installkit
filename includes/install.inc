@@ -50,6 +50,12 @@ function imagex_install_profile(&$install_state) {
     ));
   }
 
+  // Attach the default configuration after the module installations.
+  $operations[] = array('_imagex_install_profile_execute_task', array(
+    'ImagexInstallDefaultsTask',
+    array(),
+  ));
+
   // Allow for inherited profiles to alter the installation tasks.
   drupal_alter('imagex_install_tasks_alter', $operations);
 
@@ -89,6 +95,11 @@ function imagex_install_finished(&$install_state) {
 
   // Run cron to perform initial jobs.
   drupal_cron_run();
+
+  // If not in CLI, perform a redirect to front page.
+  if (!drupal_is_cli()) {
+    drupal_goto();
+  }
 }
 
 /**
@@ -119,9 +130,14 @@ function _imagex_install_profile_execute_task($class_name, array $arguments, &$c
       throw new ImagexException(st('The install task class is not instantiatable.'));
     }
 
+    // Create a new instance of the task class using the reflector.
     $instance = $reflection->newInstance();
+
+    // Setup the installation task.
     $instance->setContext($context);
     $instance->setArguments($arguments);
+
+    // And ... execute, let the magic happen.
     $instance->execute();
   }
   catch (Exception $exception) {

@@ -89,6 +89,11 @@ function imagex_install_finished(&$install_state) {
 
   // Run cron to perform initial jobs.
   drupal_cron_run();
+
+  // If not in CLI, perform a redirect to front page.
+  if (!drupal_is_cli()) {
+    drupal_goto();
+  }
 }
 
 /**

@@ -27,14 +27,9 @@ abstract class ImagexInstallTask {
    * Creates a new instance of ImagexInstallTask.
    * 
    * @access public
-   * @param array $arguments
-   *   An array of arguments for this task.
-   * @param array $context
-   *   An array of contextual inforamtion for this task.
    */
-  final public function __construct(array $arguments, array &$context) {
-    $this->setArguments($arguments);
-    $this->setContext($context);
+  final public function __construct() {
+    // Empty.
   }
 
   /**

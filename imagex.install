@@ -212,7 +212,7 @@ function imagex_install() {
       'modified' => 1,
       'locked' => 0,
     ),
-    array(
+    /* array(
       'type' => 'article',
       'name' => st('Article'),
       'base' => 'node_content',
@@ -220,7 +220,7 @@ function imagex_install() {
       'custom' => 1,
       'modified' => 1,
       'locked' => 0,
-    ),
+    ), */
   );
 
   foreach ($types as $type) {
@@ -238,7 +238,7 @@ function imagex_install() {
         'rdftype' => array('foaf:Document'),
       ),
     ),
-    array(
+    /* array(
       'type' => 'node',
       'bundle' => 'article',
       'mapping' => array(
@@ -251,7 +251,7 @@ function imagex_install() {
           'type' => 'rel',
         ),
       ),
-    ),
+    ), */
   );
   foreach ($rdf_mappings as $rdf_mapping) {
     rdf_mapping_save($rdf_mapping);
@@ -301,7 +301,7 @@ function imagex_install() {
   );
   field_create_field($field);
 
-  $instance = array(
+  /* $instance = array(
     'field_name' => 'field_' . $vocabulary->machine_name,
     'entity_type' => 'node',
     'label' => 'Tags',
@@ -322,7 +322,7 @@ function imagex_install() {
       ),
     ),
   );
-  field_create_instance($instance);
+  field_create_instance($instance); */
 
 
   // Create an image field named "Image", enabled for the 'article' content type.
@@ -349,7 +349,7 @@ function imagex_install() {
 
   // Many of the following values will be defaulted, they're included here as an illustrative examples.
   // See http://api.drupal.org/api/function/field_create_instance/7
-  $instance = array(
+  /* $instance = array(
     'field_name' => 'field_image',
     'entity_type' => 'node',
     'label' => 'Image',
@@ -391,7 +391,7 @@ function imagex_install() {
       ),
     ),
   );
-  field_create_instance($instance);
+  field_create_instance($instance); */
 
   // Enable default permissions for system roles.
   $filtered_html_permission = filter_permission_name($filtered_html_format);

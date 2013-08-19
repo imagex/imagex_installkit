@@ -50,6 +50,10 @@ function imagex_install_profile(&$install_state) {
     ));
   }
 
+  // Allow for inherited profiles to alter the installation tasks.
+  drupal_alter('imagex_install_tasks_alter', $operations);
+
+  // Setup the final batch information and return.
   $batch = array(
     'operations' => $operations,
     'title' => st('Install @drupal', array(

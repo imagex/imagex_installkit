@@ -11,5 +11,5 @@
  * @version 1.0.0
  */
 class ImagexException extends Exception {
-  // Placeholder.
+  // Empty.
 }

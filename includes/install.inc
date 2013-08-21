@@ -87,14 +87,8 @@ function imagex_install_profile_finished() {
  *   An array of the current installation state.
  */
 function imagex_install_finished(&$install_state) {
-  // Flush all caches.
-  drupal_flush_all_caches();
-
-  // Cache a fully built schema.
-  drupal_get_schema(NULL, TRUE);
-
-  // Run cron to perform initial jobs.
-  drupal_cron_run();
+  // Allow the core installation finished process to run.
+  install_finished($install_state);
 
   // If not in CLI, perform a redirect to front page.
   if (!drupal_is_cli()) {

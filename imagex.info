@@ -61,6 +61,7 @@ dependencies[] = panelizer
 dependencies[] = panels
 dependencies[] = pathauto
 dependencies[] = strongarm
+dependencies[] = taxonomy_access_fix
 dependencies[] = token
 dependencies[] = uuid
 dependencies[] = uuid_features

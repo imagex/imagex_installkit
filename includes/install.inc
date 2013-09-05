@@ -14,12 +14,12 @@
 function imagex_install_bootstrap(&$tasks, &$install_state) {
   $install_state['imagex'] = array();
 
-  // $tasks['install_select_locale']['display'] = FALSE;
-  // $tasks['install_select_locale']['run'] = INSTALL_TASK_SKIP;
-  // $install_state['parameters']['locale'] = 'en';
+  $tasks['install_select_locale']['display'] = FALSE;
+  $tasks['install_select_locale']['run'] = INSTALL_TASK_SKIP;
+  $install_state['parameters']['locale'] = 'en';
 
-  // $tasks['install_profile_modules']['function'] = 'imagex_install_profile';
-  // $tasks['install_finished']['function'] = 'imagex_install_finished';
+  $tasks['install_profile_modules']['function'] = 'imagex_install_profile';
+  $tasks['install_finished']['function'] = 'imagex_install_finished';
 }
 
 /**

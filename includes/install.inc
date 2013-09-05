@@ -83,12 +83,13 @@ function imagex_install_profile_finished() {
 /**
  * Overrides the install_finished().
  *
+ * Much of this function's implementation is the duplicated 
+ *
  * @param array $install_state
  *   An array of the current installation state.
  */
 function imagex_install_finished(&$install_state) {
-  // Allow the core installation finished process to run.
-  install_finished($install_state);
+  $output = install_finished($install_state);
 
   // If not in CLI, perform a redirect to front page.
   if (!drupal_is_cli()) {

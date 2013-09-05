@@ -14,12 +14,12 @@
 function imagex_install_bootstrap(&$tasks, &$install_state) {
   $install_state['imagex'] = array();
 
-  $tasks['install_select_locale']['display'] = FALSE;
-  $tasks['install_select_locale']['run'] = INSTALL_TASK_SKIP;
-  $install_state['parameters']['locale'] = 'en';
+  // $tasks['install_select_locale']['display'] = FALSE;
+  // $tasks['install_select_locale']['run'] = INSTALL_TASK_SKIP;
+  // $install_state['parameters']['locale'] = 'en';
 
-  $tasks['install_profile_modules']['function'] = 'imagex_install_profile';
-  $tasks['install_finished']['function'] = 'imagex_install_finished';
+  // $tasks['install_profile_modules']['function'] = 'imagex_install_profile';
+  // $tasks['install_finished']['function'] = 'imagex_install_finished';
 }
 
 /**
@@ -83,18 +83,13 @@ function imagex_install_profile_finished() {
 /**
  * Overrides the install_finished().
  *
+ * Much of this function's implementation is the duplicated 
+ *
  * @param array $install_state
  *   An array of the current installation state.
  */
 function imagex_install_finished(&$install_state) {
-  // Flush all caches.
-  drupal_flush_all_caches();
-
-  // Cache a fully built schema.
-  drupal_get_schema(NULL, TRUE);
-
-  // Run cron to perform initial jobs.
-  drupal_cron_run();
+  $output = install_finished($install_state);
 
   // If not in CLI, perform a redirect to front page.
   if (!drupal_is_cli()) {

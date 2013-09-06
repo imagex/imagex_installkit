@@ -89,7 +89,43 @@ function imagex_install_profile_finished() {
  *   An array of the current installation state.
  */
 function imagex_install_finished(&$install_state) {
-  $output = install_finished($install_state);
+  // Flush all caches to ensure that any full bootstraps during the installer
+  // do not leave stale cached data, and that any content types or other items
+  // registered by the installation profile are registered correctly.
+  drupal_flush_all_caches();
+
+  // Remember the profiles that were used.
+  $profiles = drupal_get_profiles();
+  variable_set('install_profile', $profiles[0]);
+  variable_set('install_profiles', $profiles);
+
+  // Installation profiles are always loaded last.
+  $weight = 1000 + count($profiles);
+  foreach ($profiles as $profile) {
+    db_update('system')
+      ->fields(array('weight' => $weight))
+      ->condition('type', 'module')
+      ->condition('name', $profile)
+      ->execute();
+    $weight = $weight - 1;
+  }
+
+  // Enable the administration theme, seven.
+  db_update('system')
+    ->fields(array('status' => 1))
+    ->condition('type', 'theme')
+    ->condition('name', 'seven')
+    ->execute();
+  variable_set('admin_theme', 'seven');
+  variable_set('node_admin_theme', '1');
+
+  // Cache a fully-built schema.
+  drupal_get_schema(NULL, TRUE);
+
+  // Flush all caches to ensure that any full bootstraps during the installer
+  // do not leave stale cached data, and that any content types or other items
+  // registered by the installation profile are registered correctly.
+  drupal_cron_run();
 
   // If not in CLI, perform a redirect to front page.
   if (!drupal_is_cli()) {

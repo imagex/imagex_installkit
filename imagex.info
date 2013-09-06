@@ -30,6 +30,7 @@ dependencies[] = path
 dependencies[] = taxonomy
 dependencies[] = dblog
 dependencies[] = search
+dependencies[] = simpletest
 dependencies[] = shortcut
 dependencies[] = toolbar
 dependencies[] = overlay

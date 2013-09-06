@@ -1,19 +1,8 @@
 diff --git a/includes/common.inc b/includes/common.inc
-index 262e1c5..ac9dac1 100644
+index 262e1c5..b38425a 100644
 --- a/includes/common.inc
 +++ b/includes/common.inc
-@@ -226,12 +226,34 @@ function drupal_get_profile() {
-     $profile = $install_state['parameters']['profile'];
-   }
-   else {
--    $profile = variable_get('install_profile', 'standard');
-+    $profile = variable_get('install_profile', NULL);
-+    if (empty($profile)) {
-+      $profiles = drupal_get_profiles();
-+      $profile = array_shift($profiles);
-+    }
-   }
- 
+@@ -232,6 +232,24 @@ function drupal_get_profile() {
    return $profile;
  }
  
@@ -30,7 +19,7 @@ index 262e1c5..ac9dac1 100644
 +    $profiles = $install_state['profiles'];
 +  }
 +  else {
-+    $profiles = variable_get('install_profiles', array('standard'));
++    $profiles = variable_get('install_profiles', array(drupal_get_profile()));
 +  }
 +
 +  return $profiles;
@@ -38,7 +27,7 @@ index 262e1c5..ac9dac1 100644
  
  /**
   * Sets the breadcrumb trail for the current page.
-@@ -5342,25 +5364,26 @@ function drupal_system_listing($mask, $directory, $key = 'name', $min_depth = 1)
+@@ -5342,25 +5360,26 @@ function drupal_system_listing($mask, $directory, $key = 'name', $min_depth = 1)
  
    $searchdir = array($directory);
    $files = array();
@@ -70,7 +59,7 @@ index 262e1c5..ac9dac1 100644
      if (file_exists("profiles/$profile/$directory")) {
        $searchdir[] = "profiles/$profile/$directory";
 diff --git a/includes/install.core.inc b/includes/install.core.inc
-index 7a694e9..dca92be 100644
+index 7a694e9..75996f5 100644
 --- a/includes/install.core.inc
 +++ b/includes/install.core.inc
 @@ -162,8 +162,10 @@ function install_state_defaults() {
@@ -225,7 +214,57 @@ index 7a694e9..dca92be 100644
          return drupal_render($form);
        }
        else {
-@@ -1342,10 +1364,25 @@ function install_load_profile(&$install_state) {
+@@ -1194,9 +1216,14 @@ function install_find_locales($profilename) {
+  *   locale cannot be chosen automatically.
+  */
+ function install_select_locale(&$install_state) {
++  $locales = array();
++  $profiles = array_reverse($install_state['profiles']);
+   // Find all available locales.
+-  $profilename = $install_state['parameters']['profile'];
+-  $locales = install_find_locales($profilename);
++  foreach ($profiles as $profile) {
++    $profilelocales = install_find_locales($profile);
++    $locales = array_merge($locales, $profilelocales);
++  }
++  $locales = array_unique($locales);
+   $install_state['locales'] += $locales;
+ 
+   if (!empty($_POST['locale'])) {
+@@ -1208,6 +1235,7 @@ function install_select_locale(&$install_state) {
+     }
+   }
+ 
++  $profilename = $install_state['parameters']['profile'];
+   if (empty($install_state['parameters']['locale'])) {
+     // If only the built-in (English) language is available, and we are
+     // performing an interactive installation, inform the user that the
+@@ -1247,14 +1275,16 @@ function install_select_locale(&$install_state) {
+     }
+     else {
+       // Allow profile to pre-select the language, skipping the selection.
+-      $function = $profilename . '_profile_details';
+-      if (function_exists($function)) {
+-        $details = $function();
+-        if (isset($details['language'])) {
+-          foreach ($locales as $locale) {
+-            if ($details['language'] == $locale->name) {
+-              $install_state['parameters']['locale'] = $locale->name;
+-              return;
++      foreach ($profiles as $profile) {
++        $function = $profile . '_profile_details';
++        if (function_exists($function)) {
++          $details = $function();
++          if (isset($details['language'])) {
++            foreach ($locales as $locale) {
++              if ($details['language'] == $locale->name) {
++                $install_state['parameters']['locale'] = $locale->name;
++                return;
++              }
+             }
+           }
+         }
+@@ -1342,10 +1372,25 @@ function install_load_profile(&$install_state) {
    $profile_file = DRUPAL_ROOT . '/profiles/' . $install_state['parameters']['profile'] . '/' . $install_state['parameters']['profile'] . '.profile';
    if (file_exists($profile_file)) {
      include_once $profile_file;
@@ -253,7 +292,7 @@ index 7a694e9..dca92be 100644
    }
  }
  
-@@ -1380,7 +1417,10 @@ function install_profile_modules(&$install_state) {
+@@ -1380,7 +1425,10 @@ function install_profile_modules(&$install_state) {
    // Although the profile module is marked as required, it needs to go after
    // every dependency, including non-required ones. So clear its required
    // flag for now to allow it to install late.
@@ -265,7 +304,7 @@ index 7a694e9..dca92be 100644
    // Add modules that other modules depend on.
    foreach ($modules as $module) {
      if ($files[$module]->requires) {
-@@ -1541,13 +1581,19 @@ function install_finished(&$install_state) {
+@@ -1541,13 +1589,19 @@ function install_finished(&$install_state) {
  
    // Remember the profile which was used.
    variable_set('install_profile', drupal_get_profile());
@@ -290,7 +329,7 @@ index 7a694e9..dca92be 100644
  
    // Cache a fully-built schema.
    drupal_get_schema(NULL, TRUE);
-@@ -1586,10 +1632,12 @@ function _install_profile_modules_finished($success, $results, $operations) {
+@@ -1586,10 +1640,12 @@ function _install_profile_modules_finished($success, $results, $operations) {
   * Checks installation requirements and reports any errors.
   */
  function install_check_requirements($install_state) {

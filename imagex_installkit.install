@@ -1,0 +1,11 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_install().
+ */
+function imagex_installkit_install() {
+  // Empty.
+}

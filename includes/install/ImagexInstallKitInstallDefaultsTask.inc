@@ -7,10 +7,10 @@
  * Handles the default configurations of the profile install.
  * 
  * @author Aaron McGowan <aaron@imagexmedia.com>
- * @package ImageX.Install
+ * @package ImageX.InstallKit.Install
  * @version  1.0.0
  */
-class ImagexInstallDefaultsTask extends ImagexInstallTask {
+class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
   /**
    * {@inheritDoc}
    */

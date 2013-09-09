@@ -7,10 +7,10 @@
  * Base installation task class that executes tasks during install.
  *
  * @author Aaron McGowan <aaron@imagexmedia.com>
- * @package ImageX.Install
+ * @package ImageX.InstallKit.Install
  * @version 1.0.0
  */
-abstract class ImagexInstallTask {
+abstract class ImagexInstallKitInstallTask {
   /**
    * @var array
    *   An array of arguments for processing.

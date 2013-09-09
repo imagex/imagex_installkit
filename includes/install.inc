@@ -11,15 +11,15 @@
  * @param array $install_state
  *   An array of the current installation state.
  */
-function imagex_install_bootstrap(&$tasks, &$install_state) {
+function imagex_installkit_install_bootstrap(&$tasks, &$install_state) {
   $install_state['imagex'] = array();
 
   $tasks['install_select_locale']['display'] = FALSE;
   $tasks['install_select_locale']['run'] = INSTALL_TASK_SKIP;
   $install_state['parameters']['locale'] = 'en';
 
-  $tasks['install_profile_modules']['function'] = 'imagex_install_profile';
-  $tasks['install_finished']['function'] = 'imagex_install_finished';
+  $tasks['install_profile_modules']['function'] = 'imagex_installkit_install_profile';
+  $tasks['install_finished']['function'] = 'imagex_installkit_install_finished';
 }
 
 /**
@@ -31,9 +31,10 @@ function imagex_install_bootstrap(&$tasks, &$install_state) {
  * @return array
  *   Returns a batch information to perform the installation.
  */
-function imagex_install_profile(&$install_state) {
+function imagex_installkit_install_profile(&$install_state) {
   $operations = array();
 
+  // TODO: Need to add the retrieval of all defined install tasks.
   // Retrieve the `core` defined modules installation batch and alter them.
   $initial_batch = install_profile_modules($install_state);
   foreach ($initial_batch['operations'] as $module_batch) {
@@ -41,8 +42,8 @@ function imagex_install_profile(&$install_state) {
       continue;
     }
     $module_batch_info = $module_batch[1];
-    $operations[] = array('_imagex_install_profile_execute_task', array(
-      'ImagexInstallModuleTask',
+    $operations[] = array('_imagex_installkit_install_profile_execute_task', array(
+      'ImagexInstallKitInstallModuleTask',
       array(
         'module' => $module_batch_info[0],
         'module name' => $module_batch_info[1],
@@ -51,13 +52,13 @@ function imagex_install_profile(&$install_state) {
   }
 
   // Attach the default configuration after the module installations.
-  $operations[] = array('_imagex_install_profile_execute_task', array(
-    'ImagexInstallDefaultsTask',
+  $operations[] = array('_imagex_installkit_install_profile_execute_task', array(
+    'ImagexInstallKitInstallDefaultsTask',
     array(),
   ));
 
   // Allow for inherited profiles to alter the installation tasks.
-  drupal_alter('imagex_install_tasks_alter', $operations);
+  drupal_alter('imagex_installkit_install_tasks_alter', $operations);
 
   // Setup the final batch information and return.
   $batch = array(
@@ -66,7 +67,7 @@ function imagex_install_profile(&$install_state) {
       '@drupal' => drupal_install_profile_distribution_name(),
     )),
     'error_message' => st('The installation has encountered an error.'),
-    'finished' => 'imagex_install_profile_finished',
+    'finished' => 'imagex_installkit_install_profile_finished',
   );
 
   return $batch;
@@ -75,7 +76,7 @@ function imagex_install_profile(&$install_state) {
 /**
  * Invoked at the end of the profile installation (batch operations) step.
  */
-function imagex_install_profile_finished() {
+function imagex_installkit_install_profile_finished() {
   // Flush and clear all caches.
   drupal_flush_all_caches();
 }
@@ -83,12 +84,12 @@ function imagex_install_profile_finished() {
 /**
  * Overrides the install_finished().
  *
- * Much of this function's implementation is the duplicated 
+ * Much of this function's implementation is the duplicated.
  *
  * @param array $install_state
  *   An array of the current installation state.
  */
-function imagex_install_finished(&$install_state) {
+function imagex_installkit_install_finished(&$install_state) {
   // Flush all caches to ensure that any full bootstraps during the installer
   // do not leave stale cached data, and that any content types or other items
   // registered by the installation profile are registered correctly.
@@ -110,15 +111,6 @@ function imagex_install_finished(&$install_state) {
     $weight = $weight - 1;
   }
 
-  // Enable the administration theme, seven.
-  db_update('system')
-    ->fields(array('status' => 1))
-    ->condition('type', 'theme')
-    ->condition('name', 'seven')
-    ->execute();
-  variable_set('admin_theme', 'seven');
-  variable_set('node_admin_theme', '1');
-
   // Cache a fully-built schema.
   drupal_get_schema(NULL, TRUE);
 
@@ -131,6 +123,8 @@ function imagex_install_finished(&$install_state) {
   if (!drupal_is_cli()) {
     drupal_goto();
   }
+
+  return '';
 }
 
 /**
@@ -147,18 +141,18 @@ function imagex_install_finished(&$install_state) {
  * @throws Exception
  *   Throws an Exception for various reasons.
  */
-function _imagex_install_profile_execute_task($class_name, array $arguments, &$context) {
-  imagex_load_include('inc', 'includes/ImagexInstallTask');
-  imagex_load_include('inc', 'includes/install/' . $class_name);
+function _imagex_installkit_install_profile_execute_task($class_name, array $arguments, &$context) {
+  imagex_installkit_load_include('inc', 'includes/ImagexInstallKitInstallTask');
+  imagex_installkit_load_include('inc', 'includes/install/' . $class_name);
 
   try {
     $reflection = new ReflectionClass($class_name);
-    if (!$reflection->isSubclassOf('ImagexInstallTask')) {
-      throw new ImagexException(st('The specified install task cannot be instantiated, it is not an instance of ImagexInstallTask.'));
+    if (!$reflection->isSubclassOf('ImagexInstallKitInstallTask')) {
+      throw new Exception(st('The specified install task cannot be instantiated, it is not an instance of ImagexInstallKitInstallTask.'));
     }
 
     if (!$reflection->isInstantiable()) {
-      throw new ImagexException(st('The install task class is not instantiatable.'));
+      throw new Exception(st('The install task class is not instantiatable.'));
     }
 
     // Create a new instance of the task class using the reflector.

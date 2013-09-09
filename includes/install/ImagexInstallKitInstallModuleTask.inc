@@ -7,10 +7,10 @@
  * Handles the installation of a module during the profile install.
  * 
  * @author Aaron McGowan <aaron@imagexmedia.com>
- * @package ImageX.Install
+ * @package ImageX.InstallKit.Install
  * @version  1.0.0
  */
-class ImagexInstallModuleTask extends ImagexInstallTask {
+class ImagexInstallKitInstallModuleTask extends ImagexInstallKitInstallTask {
   /**
    * {@inheritDoc}
    */

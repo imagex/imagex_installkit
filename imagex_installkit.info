@@ -3,7 +3,7 @@ description = Drupal installation profile for ImageX containing core configurati
 distribution_name = ImageX
 core = 7.x
 version = 7.x-dev
-hidden = TRUE
+; hidden = TRUE
 
 ; Files
 files[] = includes/install.inc
@@ -68,3 +68,5 @@ dependencies[] = views_bulk_operations
 
 ; ImageX modules to be installed and enabled.
 dependencies[] = imagex
+; dependencies[] = imagex_bean
+; dependencies[] = imagex_migration

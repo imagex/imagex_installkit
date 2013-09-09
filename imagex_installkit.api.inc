@@ -13,7 +13,7 @@
  * @return array
  *   An array of installation task information.
  */
-function hook_imagex_install_tasks() {
+function hook_imagex_installkit_install_tasks() {
   // TODO: Create routine for allowing and modifying the requirements.
   return array();
 }
@@ -41,6 +41,6 @@ function hook_imagex_install_tasks() {
  *   An array of operations to perform during the `Install Profile` step of
  *   installation.
  */
-function hook_imagex_install_tasks_alter(array &$tasks) {
+function hook_imagex_installkit_install_tasks_alter(array &$tasks) {
   // TODO: Provide example of how to alter.
 }

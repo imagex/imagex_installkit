@@ -1,18 +1,15 @@
 name = ImageX
-description = Base installation Drupal profile for ImageX containing core configuration, features and more.
+description = Drupal installation profile for ImageX containing core configuration, features, modules and more.
+distribution_name = ImageX
 core = 7.x
 version = 7.x-dev
-
-; Ensure that the ImageX install profile is exclusive, the one that should be auto selected.
-; Note: Should other installation profiles have this option set, the default install select will be displayed.
-; exclusive = TRUE
+hidden = TRUE
 
 ; Files
 files[] = includes/install.inc
-files[] = includes/ImagexException.inc
-files[] = includes/ImagexInstallTask.inc
-files[] = includes/install/ImagexInstallDefaultsTask.inc
-files[] = includes/install/ImagexInstallModuleTask.inc
+files[] = includes/ImagexInstallKitInstallTask.inc
+files[] = includes/install/ImagexInstallKitInstallDefaultsTask.inc
+files[] = includes/install/ImagexInstallKitInstallModuleTask.inc
 
 ; Drupal core modules to be installed and enabled.
 dependencies[] = block
@@ -39,7 +36,6 @@ dependencies[] = file
 dependencies[] = rdf
 
 ; Drupal contrib modules to be installed and enabled.
-; dependencies[] = admin_menu
 dependencies[] = admin_views
 dependencies[] = backup_migrate
 dependencies[] = bean
@@ -58,6 +54,7 @@ dependencies[] = features
 dependencies[] = field_collection
 dependencies[] = file_entity
 dependencies[] = libraries
+dependencies[] = module_filter
 dependencies[] = panelizer
 dependencies[] = panels
 dependencies[] = pathauto
@@ -70,3 +67,4 @@ dependencies[] = views
 dependencies[] = views_bulk_operations
 
 ; ImageX modules to be installed and enabled.
+dependencies[] = imagex

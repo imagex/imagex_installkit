@@ -15,17 +15,6 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
    * {@inheritDoc}
    */
   public function execute() {
-    if (module_exists('taxonomy')) {
-      // Create a default vocabulary named "Tags".
-      $vocabulary = (object) array(
-        'name' => st('Tags'),
-        'description' => st('Use tags to group content on similar topics into categories.'),
-        'machine_name' => 'tags',
-        'help' => st('Enter a comma-separated list of words to describe your content.'),
-      );
-      taxonomy_vocabulary_save($vocabulary);
-    }
-
     if (module_exists('user')) {
       // Create the default role.
       $admin_role = new stdClass();

@@ -56,6 +56,9 @@ projects[features][version] = "2.0-rc2"
 projects[features_extra][type] = "module"
 projects[features_extra][subdir] = "contrib"
 projects[features_extra][version] = "1.0-beta1"
+projects[features_override][type] = "module"
+projects[features_override][subdir] = "contrib"
+projects[features_override][version] = "2.0-beta3"
 projects[field_collection][type] = "module"
 projects[field_collection][subdir] = "contrib"
 projects[field_collection][version] = "1.0-beta5"
@@ -112,3 +115,9 @@ projects[parrot][type] = "theme"
 projects[parrot][version] = "1.x-dev"
 
 ; Libraries.
+
+; Download the ImageX modules
+projects[imagex][type] = "module"
+projects[imagex][download][type] = "git"
+projects[imagex][download][url] = "git@github.com:imagex/imagex.git"
+projects[imagex][download][branch] = "7.x-dev"

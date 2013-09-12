@@ -2,6 +2,9 @@ api = 2
 core = 7.x
 
 ; Contributed modules.
+projects[addressfield] = "module"
+projects[addressfield] = "contrib"
+projects[addressfield] = "7.x-1.0-beta4"
 projects[admin_menu][type] = "module"
 projects[admin_menu][subdir] = "contrib"
 projects[admin_menu][version] = "3.0-rc4"
@@ -86,6 +89,9 @@ projects[pathauto][version] = "1.2"
 projects[redirect][type] = "module"
 projects[redirect][subdir] = "contrib"
 projects[redirect][version] = "1.0-rc1"
+projects[registration][type] = "module"
+projects[registration][subdir]="contrib"
+projects[registration][type] = "7.x-1.2"
 projects[strongarm][type] = "module"
 projects[strongarm][subdir] = "contrib"
 projects[strongarm][version] = "2.0"

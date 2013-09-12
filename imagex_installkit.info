@@ -54,6 +54,7 @@ dependencies[] = features
 dependencies[] = field_collection
 dependencies[] = file_entity
 dependencies[] = libraries
+dependencies[] = link
 dependencies[] = module_filter
 dependencies[] = metatag
 dependencies[] = panelizer

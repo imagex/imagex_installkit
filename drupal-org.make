@@ -2,9 +2,9 @@ api = 2
 core = 7.x
 
 ; Contributed modules.
-projects[addressfield] = "module"
-projects[addressfield] = "contrib"
-projects[addressfield] = "1.0-beta4"
+projects[addressfield]['type'] = "module"
+projects[addressfield]['subdir'] = "contrib"
+projects[addressfield]['version'] = "1.0-beta4"
 projects[admin_menu][type] = "module"
 projects[admin_menu][subdir] = "contrib"
 projects[admin_menu][version] = "3.0-rc4"

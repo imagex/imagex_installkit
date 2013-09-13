@@ -79,6 +79,7 @@ dependencies[] = imagex_dbal
 dependencies[] = imagex_events
 dependencies[] = imagex_faq
 dependencies[] = imagex_migration
+dependencies[] = imagex_news
 dependencies[] = imagex_page
 dependencies[] = imagex_user_roles_permissions
 dependencies[] = imagex_vocabulary_tags

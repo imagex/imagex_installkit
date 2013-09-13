@@ -125,5 +125,5 @@ projects[parrot][version] = "1.x-dev"
 ; Download the ImageX modules
 projects[imagex][type] = "module"
 projects[imagex][download][type] = "git"
-projects[imagex][download][url] = "git@github.com:emmairwin/imagex.git"
+projects[imagex][download][url] = "git@github.com:imagex/imagex.git"
 projects[imagex][download][branch] = "7.x-dev"

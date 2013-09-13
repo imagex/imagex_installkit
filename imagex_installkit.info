@@ -62,7 +62,6 @@ dependencies[] = panelizer
 dependencies[] = panels
 dependencies[] = pathauto
 dependencies[] = redirect
-dependencies[] = registration
 dependencies[] = strongarm
 dependencies[] = taxonomy_access_fix
 dependencies[] = token

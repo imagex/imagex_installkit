@@ -110,18 +110,12 @@ projects[features][version] = "2.0-rc2"
 projects[features_extra][type] = "module"
 projects[features_extra][subdir] = "contrib"
 projects[features_extra][version] = "1.0-beta1"
-<<<<<<< HEAD
 projects[features_overrides][type] = "module"
 projects[features_overrides][subdir] = "contrib"
 projects[features_overrides][version] = "2.0-beta3"
 projects[fences][type] = "module"
 projects[fences][subdir] = "contrib"
 projects[fences][version] = "1.0"
-=======
-projects[features_override][type] = "module"
-projects[features_override][subdir] = "contrib"
-projects[features_override][version] = "2.0-beta3"
->>>>>>> d7ee5cc6b050237685e6b887b3fee41c19b82954
 projects[field_collection][type] = "module"
 projects[field_collection][subdir] = "contrib"
 projects[field_collection][version] = "1.0-beta5"

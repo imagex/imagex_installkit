@@ -16,6 +16,7 @@ dependencies[] = block
 dependencies[] = color
 dependencies[] = comment
 dependencies[] = contextual
+dependencies[] = date_popup
 dependencies[] = dashboard
 dependencies[] = help
 dependencies[] = image
@@ -36,6 +37,7 @@ dependencies[] = file
 dependencies[] = rdf
 
 ; Drupal contrib modules to be installed and enabled.
+dependencies[] = addressfield
 dependencies[] = admin_views
 dependencies[] = backup_migrate
 dependencies[] = bean
@@ -75,9 +77,16 @@ dependencies[] = views_bulk_operations
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
 dependencies[] = imagex_bean
+dependencies[] = imagex_blog
+dependencies[] = imagex_common_fields
 ; dependencies[] = imagex_dashboard
-; dependencies[] = imagex_dbal
-; dependencies[] = imagex_migration
+; dependencies[] = imagex_group
+dependencies[] = imagex_dbal
+dependencies[] = imagex_events
+dependencies[] = imagex_faq
+dependencies[] = imagex_migration
+dependencies[] = imagex_news
+dependencies[] = imagex_page
 dependencies[] = imagex_user_roles_permissions
 dependencies[] = imagex_vocabulary_tags
-; dependencies[] = imagex_wiki
+dependencies[] = imagex_wiki

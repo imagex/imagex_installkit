@@ -73,6 +73,12 @@ dependencies[] = uuid
 dependencies[] = uuid_features
 dependencies[] = views
 dependencies[] = views_bulk_operations
+dependencies[] = workbench
+dependencies[] = workbench_access
+dependencies[] = workbench_media
+dependencies[] = workbench_moderation
+dependencies[] = scheduler_workbench
+
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
@@ -80,7 +86,7 @@ dependencies[] = imagex_bean
 dependencies[] = imagex_blog
 dependencies[] = imagex_common_fields
 ; dependencies[] = imagex_dashboard
-; dependencies[] = imagex_group
+dependencies[] = imagex_group
 dependencies[] = imagex_dbal
 dependencies[] = imagex_events
 dependencies[] = imagex_faq

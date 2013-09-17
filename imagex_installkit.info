@@ -73,6 +73,12 @@ dependencies[] = uuid
 dependencies[] = uuid_features
 dependencies[] = views
 dependencies[] = views_bulk_operations
+dependencies[] = workflow
+dependencies[] = workflow_access
+dependencies[] = workflow_media
+dependencies[] = workflow_moderation
+dependencies[] = scheduler_workbench
+
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex

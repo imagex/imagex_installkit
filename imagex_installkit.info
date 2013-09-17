@@ -28,7 +28,7 @@ dependencies[] = path
 dependencies[] = taxonomy
 dependencies[] = dblog
 dependencies[] = search
-dependencies[] = simpletest
+; dependencies[] = simpletest
 dependencies[] = shortcut
 dependencies[] = toolbar
 dependencies[] = overlay
@@ -82,6 +82,7 @@ dependencies[] = scheduler_workbench
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
+dependencies[] = imagex_answers
 dependencies[] = imagex_bean
 dependencies[] = imagex_blog
 dependencies[] = imagex_common_fields

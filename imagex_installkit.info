@@ -77,7 +77,7 @@ dependencies[] = workbench
 dependencies[] = workbench_access
 dependencies[] = workbench_media
 dependencies[] = workbench_moderation
-dependencies[] = workbench_workbench
+dependencies[] = scheduler_workbench
 
 
 ; ImageX modules and features to be installed and enabled.

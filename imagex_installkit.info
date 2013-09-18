@@ -65,6 +65,7 @@ dependencies[] = panels
 dependencies[] = panels_ipe
 dependencies[] = panels_mini
 dependencies[] = pathauto
+dependencies[] = scheduler
 dependencies[] = redirect
 dependencies[] = strongarm
 dependencies[] = taxonomy_access_fix
@@ -77,6 +78,7 @@ dependencies[] = workbench
 dependencies[] = workbench_access
 dependencies[] = workbench_media
 dependencies[] = workbench_moderation
+dependencies[] = workbench_moderation_notes
 dependencies[] = scheduler_workbench
 
 

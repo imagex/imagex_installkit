@@ -73,6 +73,7 @@ dependencies[] = panels
 dependencies[] = panels_ipe
 dependencies[] = panels_mini
 dependencies[] = pathauto
+dependencies[] = scheduler
 dependencies[] = redirect
 dependencies[] = remote_stream_wrapper
 dependencies[] = rules
@@ -89,6 +90,7 @@ dependencies[] = workbench
 dependencies[] = workbench_access
 dependencies[] = workbench_media
 dependencies[] = workbench_moderation
+dependencies[] = workbench_moderation_notes
 dependencies[] = scheduler_workbench
 
 
@@ -108,4 +110,5 @@ dependencies[] = imagex_news
 dependencies[] = imagex_page
 dependencies[] = imagex_user_roles_permissions
 dependencies[] = imagex_vocabulary_tags
+dependencies[] = imagex_workflow
 dependencies[] = imagex_wiki

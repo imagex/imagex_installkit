@@ -37,6 +37,7 @@ dependencies[] = file
 dependencies[] = rdf
 
 ; Drupal contrib modules to be installed and enabled.
+dependencies[] = advpoll
 dependencies[] = addressfield
 dependencies[] = admin_views
 dependencies[] = backup_migrate
@@ -75,6 +76,7 @@ dependencies[] = uuid
 dependencies[] = uuid_features
 dependencies[] = views
 dependencies[] = views_bulk_operations
+dependencies[] = votingapi
 ;dependencies[] = workbench
 ;dependencies[] = workbench_access
 ;dependencies[] = workbench_moderation
@@ -99,6 +101,7 @@ dependencies[] = imagex_faq
 dependencies[] = imagex_migration
 dependencies[] = imagex_news
 dependencies[] = imagex_page
+dependencies[] = imagex_poll
 dependencies[] = imagex_vocabulary_tags
 ;dependencies[] = imagex_workflow
 dependencies[] = imagex_wiki

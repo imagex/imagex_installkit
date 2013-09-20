@@ -86,16 +86,18 @@ dependencies[] = uuid
 dependencies[] = uuid_features
 dependencies[] = views
 dependencies[] = views_bulk_operations
-dependencies[] = workbench
-dependencies[] = workbench_access
-dependencies[] = workbench_media
-dependencies[] = workbench_moderation
-dependencies[] = workbench_moderation_notes
-dependencies[] = scheduler_workbench
+;dependencies[] = workbench
+;dependencies[] = workbench_access
+;dependencies[] = workbench_moderation
+;dependencies[] = workbench_media
+;dependencies[] = scheduler_workbench
+;dependencies[] = workbench_moderation_notes
+
 
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
+dependencies[] = imagex_user_roles_permissions
 dependencies[] = imagex_answers
 dependencies[] = imagex_bean
 dependencies[] = imagex_blog
@@ -108,7 +110,6 @@ dependencies[] = imagex_faq
 dependencies[] = imagex_migration
 dependencies[] = imagex_news
 dependencies[] = imagex_page
-dependencies[] = imagex_user_roles_permissions
 dependencies[] = imagex_vocabulary_tags
 dependencies[] = imagex_workflow
 dependencies[] = imagex_wiki

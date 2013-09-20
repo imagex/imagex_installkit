@@ -10,5 +10,4 @@ projects[drupal][version] = "7.23"
 
 ; Deprecated patch for core that allows only a single profile to be inherited.
 ; This patch is no longer used in favor of the multi-inheritable profiles patch.
-; projects[drupal][patch][] = https://gist.github.com/amcgowanca/6191652/raw/53bb5248777f07a5c865cfc1f1e32ad3b0bf9392/1356276-D7-inheritable-profiles
-projects[drupal][patch][] = https://gist.github.com/amcgowanca/6444553/raw/e8d840836ad76adc99f92f294b288431710e6437/1356276-D7-inheritable-profiles-multi
+projects[drupal][patch][] = https://raw.github.com/imagex/imagex_patches/7.x/core/inheritable-profiles/1356276-D7-inheritable-profiles-multi.patch

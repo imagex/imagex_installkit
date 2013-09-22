@@ -31,7 +31,6 @@ dependencies[] = search
 ; dependencies[] = simpletest
 dependencies[] = shortcut
 dependencies[] = toolbar
-dependencies[] = overlay
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
@@ -52,7 +51,7 @@ dependencies[] = date
 dependencies[] = diff
 dependencies[] = email
 dependencies[] = entity
-; dependencies[] = entitycache
+dependencies[] = entitycache
 dependencies[] = entity_dependency
 dependencies[] = entityreference
 dependencies[] = features
@@ -88,14 +87,16 @@ dependencies[] = views
 dependencies[] = views_bulk_operations
 dependencies[] = workbench
 dependencies[] = workbench_access
-dependencies[] = workbench_media
 dependencies[] = workbench_moderation
-dependencies[] = workbench_moderation_notes
+dependencies[] = workbench_media
 dependencies[] = scheduler_workbench
+dependencies[] = workbench_moderation_notes
+
 
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
+dependencies[] = imagex_user_roles_permissions
 dependencies[] = imagex_answers
 dependencies[] = imagex_bean
 dependencies[] = imagex_blog
@@ -108,7 +109,6 @@ dependencies[] = imagex_faq
 dependencies[] = imagex_migration
 dependencies[] = imagex_news
 dependencies[] = imagex_page
-dependencies[] = imagex_user_roles_permissions
 dependencies[] = imagex_vocabulary_tags
 dependencies[] = imagex_workflow
 dependencies[] = imagex_wiki

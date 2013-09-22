@@ -31,7 +31,6 @@ dependencies[] = search
 ; dependencies[] = simpletest
 dependencies[] = shortcut
 dependencies[] = toolbar
-dependencies[] = overlay
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
@@ -52,7 +51,7 @@ dependencies[] = date
 dependencies[] = diff
 dependencies[] = email
 dependencies[] = entity
-; dependencies[] = entitycache
+dependencies[] = entitycache
 dependencies[] = entity_dependency
 dependencies[] = entityreference
 dependencies[] = features
@@ -86,12 +85,12 @@ dependencies[] = uuid
 dependencies[] = uuid_features
 dependencies[] = views
 dependencies[] = views_bulk_operations
-;dependencies[] = workbench
-;dependencies[] = workbench_access
-;dependencies[] = workbench_moderation
-;dependencies[] = workbench_media
-;dependencies[] = scheduler_workbench
-;dependencies[] = workbench_moderation_notes
+dependencies[] = workbench
+dependencies[] = workbench_access
+dependencies[] = workbench_moderation
+dependencies[] = workbench_media
+dependencies[] = scheduler_workbench
+dependencies[] = workbench_moderation_notes
 
 
 

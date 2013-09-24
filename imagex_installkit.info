@@ -97,6 +97,8 @@ dependencies[] = workbench_moderation_notes
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
+dependencies[] = imagex_content_pinned
+dependencies[] = imagex_content_featured
 dependencies[] = imagex_user_roles_permissions
 dependencies[] = imagex_answers
 dependencies[] = imagex_bean

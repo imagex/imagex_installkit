@@ -98,6 +98,7 @@ dependencies[] = workbench_moderation_notes
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
+dependencies[] = imagex_addthis
 dependencies[] = imagex_answers_addthis
 dependencies[] = imagex_blog_addthis
 dependencies[] = imagex_events_addthis

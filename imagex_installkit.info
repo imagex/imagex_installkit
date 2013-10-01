@@ -91,9 +91,6 @@ dependencies[] = workbench_access
 dependencies[] = workbench_moderation
 dependencies[] = workbench_media
 dependencies[] = scheduler_workbench
-dependencies[] = workbench_moderation_notes
-
-
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
@@ -107,6 +104,7 @@ dependencies[] = imagex_group
 dependencies[] = imagex_dbal
 ; dependencies[] = imagex_events
 dependencies[] = imagex_faq
+dependencies[] = imagex_media
 dependencies[] = imagex_migration
 dependencies[] = imagex_news
 dependencies[] = imagex_page

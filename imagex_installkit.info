@@ -78,6 +78,7 @@ dependencies[] = scheduler
 dependencies[] = redirect
 dependencies[] = remote_stream_wrapper
 dependencies[] = rules
+dependencies[] = session_api
 dependencies[] = strongarm
 dependencies[] = special_menu_items
 ; dependencies[] = system_stream_wrapper
@@ -92,23 +93,19 @@ dependencies[] = workbench_access
 dependencies[] = workbench_moderation
 dependencies[] = workbench_media
 dependencies[] = scheduler_workbench
-dependencies[] = workbench_moderation_notes
-
-
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
-dependencies[] = imagex_addthis
-dependencies[] = imagex_answers_addthis
-dependencies[] = imagex_blog_addthis
-dependencies[] = imagex_blog_featured
-dependencies[] = imagex_events_addthis
-dependencies[] = imagex_faq_addthis
-dependencies[] = imagex_group_addthis
-dependencies[] = imagex_news_addthis
-dependencies[] = imagex_page_addthis
-dependencies[] = imagex_poll_addthis
-dependencies[] = imagex_wiki_addthis
+; dependencies[] = imagex_addthis
+; dependencies[] = imagex_answers_addthis
+; dependencies[] = imagex_blog_addthis
+; dependencies[] = imagex_events_addthis
+; dependencies[] = imagex_faq_addthis
+; dependencies[] = imagex_group_addthis
+; dependencies[] = imagex_news_addthis
+; dependencies[] = imagex_page_addthis
+; dependencies[] = imagex_poll_addthis
+; dependencies[] = imagex_wiki_addthis
 dependencies[] = imagex_content_pinned
 dependencies[] = imagex_content_featured
 dependencies[] = imagex_user_roles_permissions

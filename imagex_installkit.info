@@ -78,6 +78,7 @@ dependencies[] = scheduler
 dependencies[] = redirect
 dependencies[] = remote_stream_wrapper
 dependencies[] = rules
+dependencies[] = session_api
 dependencies[] = strongarm
 dependencies[] = special_menu_items
 ; dependencies[] = system_stream_wrapper

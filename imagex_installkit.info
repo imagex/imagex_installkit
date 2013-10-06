@@ -101,6 +101,7 @@ dependencies[] = imagex
 dependencies[] = imagex_addthis
 dependencies[] = imagex_answers_addthis
 dependencies[] = imagex_blog_addthis
+dependencies[] = imagex_blog_featured
 dependencies[] = imagex_events_addthis
 dependencies[] = imagex_faq_addthis
 dependencies[] = imagex_group_addthis

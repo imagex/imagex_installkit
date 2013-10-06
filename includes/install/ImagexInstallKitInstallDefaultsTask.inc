@@ -8,7 +8,7 @@
  * 
  * @author Aaron McGowan <aaron@imagexmedia.com>
  * @package ImageX.InstallKit.Install
- * @version  1.0.0
+ * @version  1.0.1
  */
 class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
   /**
@@ -44,6 +44,28 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
       ->execute();
     variable_set('admin_theme', 'seven');
     variable_set('node_admin_theme', '1');
+
+    // Disable bartik, it is no longer needed.
+    theme_disable(array('bartik'));
+
+    // For each profile that is a child of this, attempt to find the
+    // default theme by invoking hook_imagex_installkit_default_theme().
+    $profiles = drupal_get_profiles();
+    $profiles = array_reverse($profiles);
+
+    $default_theme = NULL;
+    foreach ($profiles as $profile) {
+      $function = $profile . '_imagex_installkit_default_theme';
+      if (function_exists($function)) {
+        $default_theme = $function();
+      }
+    }
+    
+    if ($default_theme) {
+      // Enable the default theme and set it as a the default.
+      theme_enable(array($default_theme));
+      variable_set('theme_default', $default_theme);
+    }
 
     // Set and share the completion message.
     $this->context['message'] = st('Default configuration and setup complete');

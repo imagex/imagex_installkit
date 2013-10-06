@@ -6,9 +6,17 @@
 /**
  * Loads an ImageX include specifically.
  *
- * @param $type
- * @param $name
- * @return bool|string
+ * This function makes use of the `require_once` language construct. Therefore,
+ * ensure this is a noted behavior when implementing usages of this function.
+ *
+ * @param string $type
+ *   The type of file to include. Example: inc.
+ * @param string $name
+ *   The name of the file to locate and include.
+ * 
+ * @return mixed
+ *   Returns the absolute file path as a string if found and included, otherwise
+ *   returns FALSE if the file was not found.
  */
 function imagex_installkit_load_include($type, $name) {
   if (function_exists('drupal_get_path')) {
@@ -38,4 +46,11 @@ function imagex_installkit_install_tasks_alter(&$tasks, $install_state) {
  */
 function imagex_installkit_form_install_configure_form_alter(&$form, $form_state) {
   $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
+}
+
+/**
+ * Implements hook_imagex_installkit_default_theme().
+ */
+function imagex_installkit_imagex_installkit_default_theme() {
+  return 'bartik';
 }

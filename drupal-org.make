@@ -366,6 +366,18 @@ projects[imagex_page][download][type] = "git"
 projects[imagex_page][download][url] = "git@github.com:imagex/imagex_page.git"
 projects[imagex_page][download][branch] = "7.x-dev"
 
+projects[imagex_user_roles][type] = "module"
+projects[imagex_user_roles][subdir] = "imagex/modules"
+projects[imagex_user_roles][download][type] = "git"
+projects[imagex_user_roles][download][url] = "git@github.com:imagex/imagex_user_roles.git"
+projects[imagex_user_roles][download][branch] = "7.x-dev"
+
+projects[imagex_user_permissions][type] = "module"
+projects[imagex_user_permissions][subdir] = "imagex/modules"
+projects[imagex_user_permissions][download][type] = "git"
+projects[imagex_user_permissions][download][url] = "git@github.com:imagex/imagex_page.git"
+projects[imagex_user_permissions][download][branch] = "7.x-dev"
+
 projects[imagex_vocabulary_tags][type] = "module"
 projects[imagex_vocabulary_tags][subdir] = "imagex/modules"
 projects[imagex_vocabulary_tags][download][type] = "git"

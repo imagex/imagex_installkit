@@ -529,6 +529,9 @@ libraries[ckeditor][directory_name] = "ckeditor"
 libraries[htmlpurifier][download][type] = "file"
 libraries[htmlpurifier][download][url] = "http://htmlpurifier.org/releases/htmlpurifier-4.5.0.zip"
 libraries[htmlpurifier][directory_name] = "htmlpurifier"
+libraries[chosen][download][type] = "file"
+libraries[chosen][download][url] = "https://github.com/harvesthq/chosen/releases/download/1.0.0/chosen_v1.0.0.zip"
+libraries[chosen][directory_name] = "chosen"
 
 ; Download the ImageX modules
 projects[imagex][type] = "module"

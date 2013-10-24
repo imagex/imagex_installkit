@@ -376,7 +376,7 @@ projects[imagex_user_roles][download][branch] = "7.x-dev"
 projects[imagex_user_permissions][type] = "module"
 projects[imagex_user_permissions][subdir] = "imagex/modules"
 projects[imagex_user_permissions][download][type] = "git"
-projects[imagex_user_permissions][download][url] = "git@github.com:imagex/imagex_page.git"
+projects[imagex_user_permissions][download][url] = "git@github.com:imagex/imagex_user_permissions.git"
 projects[imagex_user_permissions][download][branch] = "7.x-dev"
 
 projects[imagex_vocabulary_tags][type] = "module"

@@ -54,3 +54,23 @@ function imagex_installkit_form_install_configure_form_alter(&$form, $form_state
 function imagex_installkit_imagex_installkit_default_theme() {
   return 'bartik';
 }
+
+/**
+ * Returns an array of installation profiles, in reverse order.
+ *
+ * The returned array of installation profiles allow for proper execution
+ * hierarchy, for example this base installation profile will be the last in
+ * the returned array vs. the "concrete" instances will be first.
+ *
+ * @return array $profiles
+ *   Returns an array of installation profile names.
+ */
+function imagex_installkit_get_install_profiles() {
+  static $profiles = NULL;
+  if (NULL === $profiles) {
+    $profiles = drupal_get_profiles();
+    $profiles = array_reverse($profiles);
+  }
+
+  return $profiles;
+}

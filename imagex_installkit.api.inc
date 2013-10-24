@@ -46,6 +46,16 @@ function hook_imagex_installkit_install_tasks_alter(array &$tasks) {
 }
 
 /**
+ * Returns a multi-dimensional array of block settings information.
+ *
+ * @return array
+ */
+// TODO: Write better documentation.
+function hook_imagex_installkit_install_block_info() {
+  return array();
+}
+
+/**
  * Hook to specify the default theme that should be enabled and set.
  *
  * The most derived installation profile's implementation of this hook will be

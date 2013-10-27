@@ -97,7 +97,9 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
       // Let's insert all of the newly defined and retrieved blocks.
       $block_query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
       foreach ($blocks as $module_name => $blockinfo) {
-        $block_query->values($block);
+        foreach ($blockinfo as $block) {
+          $block_query->values($block);
+        }
       }
       $block_query->execute();
     }

@@ -46,6 +46,16 @@ function hook_imagex_installkit_install_tasks_alter(array &$tasks) {
 }
 
 /**
+ * Returns a multi-dimensional array of block settings information.
+ *
+ * @return array
+ */
+// TODO: Write better documentation.
+function hook_imagex_installkit_install_block_info() {
+  return array();
+}
+
+/**
  * Hook to specify the default theme that should be enabled and set.
  *
  * The most derived installation profile's implementation of this hook will be
@@ -58,4 +68,26 @@ function hook_imagex_installkit_install_tasks_alter(array &$tasks) {
  */
 function hook_imagex_installkit_default_theme() {
   return 'parrot';
+}
+
+/**
+ * 
+ * @return array
+ */
+function hook_imagex_installkit_default_variables() {
+  return array();
+}
+
+/**
+ * @param array $variables
+ */
+function hook_imagex_installkit_default_variables_alter(array &$variables) {
+
+}
+
+/**
+ * 
+ */
+function hook_imagex_installkit_on_mode_change_variables_alter($mode) {
+  return array();
 }

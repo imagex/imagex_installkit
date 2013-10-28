@@ -50,11 +50,8 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
 
     // For each profile that is a child of this, attempt to find the
     // default theme by invoking hook_imagex_installkit_default_theme().
-    $profiles = drupal_get_profiles();
-    $profiles = array_reverse($profiles);
-
     $default_theme = NULL;
-    foreach ($profiles as $profile) {
+    foreach (imagex_installkit_get_install_profiles() as $profile) {
       $function = $profile . '_imagex_installkit_default_theme';
       if (function_exists($function)) {
         $default_theme = $function();
@@ -66,6 +63,10 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
       theme_enable(array($default_theme));
       variable_set('theme_default', $default_theme);
     }
+
+    // Time to retrieve and configure any defined blocks.
+    imagex_installkit_load_include('inc', 'includes/block');
+    imagex_installkit_block_rebuild(TRUE);
 
     // Set and share the completion message.
     $this->context['message'] = st('Default configuration and setup complete');

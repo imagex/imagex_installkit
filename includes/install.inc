@@ -95,7 +95,7 @@ function imagex_installkit_install_finished(&$install_state) {
   // registered by the installation profile are registered correctly.
   drupal_flush_all_caches();
 
-  // Remember the profiles that were used.
+  // Remember the profiles that were used, in order that Drupal likes them.
   $profiles = drupal_get_profiles();
   variable_set('install_profile', $profiles[0]);
   variable_set('install_profiles', $profiles);
@@ -123,6 +123,9 @@ function imagex_installkit_install_finished(&$install_state) {
   if (!drupal_is_cli()) {
     drupal_goto();
   }
+
+  // Clear all messages stored in the Drupal messaging system.
+  drupal_get_messages(NULL, TRUE);
 
   return '';
 }

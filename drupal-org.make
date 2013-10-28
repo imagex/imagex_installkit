@@ -329,8 +329,8 @@ projects[parrot][version] = "1.x-dev"
 ; Download the ImageX modules and components.
 projects[imagex][type] = "module"
 projects[imagex][download][type] = "git"
-projects[imagex][download][url] = "git@github.com:amcgowanca/imagex.git"
-projects[imagex][download][branch] = "core/refactor"
+projects[imagex][download][url] = "git@github.com:imagex/imagex.git"
+projects[imagex][download][branch] = "7.x-dev"
 
 projects[imagex_bean][type] = "module"
 projects[imagex_bean][subdir] = "imagex/modules"

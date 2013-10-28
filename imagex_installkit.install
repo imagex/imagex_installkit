@@ -9,3 +9,10 @@
 function imagex_installkit_install() {
   // Empty.
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function imagex_installkit_uninstall() {
+  // Empty.
+}

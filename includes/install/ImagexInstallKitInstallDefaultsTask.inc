@@ -66,43 +66,7 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
 
     // Time to retrieve and configure any defined blocks.
     imagex_installkit_load_include('inc', 'includes/block');
-
-    $blocks = array();
-    foreach (module_implements('imagex_installkit_install_block_info') as $module) {
-      $return = module_invoke($module, 'imagex_installkit_install_block_info');
-      if (is_array($return) && !empty($return)) {
-        foreach ($return as $block) {
-          $block = array_merge(imagex_installkit_block_info_defaults(), $block);
-          // Prior to continuing, each block requires a delta.
-          // If this block does not have one is empty, let's just simply move on.
-          if (empty($block['delta'])) {
-            continue;
-          }
-          // If no module name is specified, attempt to assign this module's name.
-          if (empty($block['module'])) {
-            $block['module'] = $module;
-          }
-          // Add the block to the blocks stack for installation.
-          $blocks[$module][] = $block;
-        }
-      }
-    }
-
-    // If there are blocks defined that need to be configured and placed, let's do it!
-    if (!empty($blocks)) {
-      // Clear all previously set block data and information.
-      // Warning! This is dangerous and could potentially have hazardous changes.
-      db_delete('block')->execute();
-
-      // Let's insert all of the newly defined and retrieved blocks.
-      $block_query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
-      foreach ($blocks as $module_name => $blockinfo) {
-        foreach ($blockinfo as $block) {
-          $block_query->values($block);
-        }
-      }
-      $block_query->execute();
-    }
+    imagex_installkit_block_rebuild(TRUE);
 
     // Set and share the completion message.
     $this->context['message'] = st('Default configuration and setup complete');

@@ -4,6 +4,18 @@
  */
 
 /**
+ * Implements hook_flush_caches().
+ */
+function imagex_installkit_flush_caches() {
+  if (imagex_installkit_block_rebuild_on_flush_caches()) {
+    imagex_installkit_load_include('inc', 'includes/block');
+    imagex_installkit_block_rebuild();
+  }
+
+  return array();
+}
+
+/**
  * Loads an ImageX include specifically.
  *
  * This function makes use of the `require_once` language construct. Therefore,
@@ -73,4 +85,14 @@ function imagex_installkit_get_install_profiles() {
   }
 
   return $profiles;
+}
+
+/**
+ * Returns a boolean indicating whether or not blocks should be rebuilt.
+ * 
+ * @return boolean
+ *   Returns TRUE if blocks should be rebuilt on cache flush, otherwise FALSE.
+ */
+function imagex_installkit_block_rebuild_on_flush_caches() {
+  return variable_get('imagex_installkit_block_rebuild_on_cache_flushes', TRUE);
 }

@@ -25,7 +25,7 @@ function imagex_installkit_flush_caches() {
  *   The type of file to include. Example: inc.
  * @param string $name
  *   The name of the file to locate and include.
- * 
+ *
  * @return mixed
  *   Returns the absolute file path as a string if found and included, otherwise
  *   returns FALSE if the file was not found.
@@ -64,7 +64,7 @@ function imagex_installkit_form_install_configure_form_alter(&$form, $form_state
  * Implements hook_imagex_installkit_default_theme().
  */
 function imagex_installkit_imagex_installkit_default_theme() {
-  return 'bartik';
+  return 'parrot';
 }
 
 /**
@@ -89,7 +89,7 @@ function imagex_installkit_get_install_profiles() {
 
 /**
  * Returns a boolean indicating whether or not blocks should be rebuilt.
- * 
+ *
  * @return boolean
  *   Returns TRUE if blocks should be rebuilt on cache flush, otherwise FALSE.
  */

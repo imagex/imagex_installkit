@@ -11,7 +11,6 @@ function imagex_installkit_flush_caches() {
     imagex_installkit_load_include('inc', 'includes/block');
     imagex_installkit_block_rebuild();
   }
-
   return array();
 }
 

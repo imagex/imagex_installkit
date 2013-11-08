@@ -50,8 +50,8 @@ function hook_imagex_installkit_install_tasks_alter(array &$tasks) {
  *
  * @return array
  */
-// TODO: Write better documentation.
 function hook_imagex_installkit_install_block_info() {
+  // TODO: Write better documentation.
   return array();
 }
 
@@ -68,26 +68,4 @@ function hook_imagex_installkit_install_block_info() {
  */
 function hook_imagex_installkit_default_theme() {
   return 'parrot';
-}
-
-/**
- * 
- * @return array
- */
-function hook_imagex_installkit_default_variables() {
-  return array();
-}
-
-/**
- * @param array $variables
- */
-function hook_imagex_installkit_default_variables_alter(array &$variables) {
-
-}
-
-/**
- * 
- */
-function hook_imagex_installkit_on_mode_change_variables_alter($mode) {
-  return array();
 }

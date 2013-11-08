@@ -9,7 +9,7 @@
 function imagex_installkit_drush_command() {
   $commands = array();
   $commands['imagex-installkit-block-rebuild'] = array(
-    'description' => 'Rebuilds the blocks defined by hook_imagex_installkit_install_block_info().',
+    'description' => 'Rebuilds the blocks defined by hook_imagex_installkit_install_block_info() at runtime.',
     'options' => array(
       'all' => 'Signals that all blocks should be removed.',
     ),
@@ -31,5 +31,5 @@ function drush_imagex_installkit_block_rebuild() {
   imagex_installkit_block_rebuild($remove_all_blocks);
 
   // Display a success message.
-  drush_print(dt('ImageX InstallKit has rebuilt blocks defined.'));
+  drush_log(dt('ImageX InstallKit has rebuilt blocks defined.'), 'ok');
 }

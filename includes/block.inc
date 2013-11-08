@@ -25,7 +25,10 @@ function imagex_installkit_block_info_defaults() {
 }
 
 /**
- * 
+ * Performs the block rebuild for blocks defined by block info hook.
+ *
+ * @param bool $remove_all
+ *   A boolean to determine whether or not all blocks should be removed prior.
  */
 function imagex_installkit_block_rebuild($remove_all = FALSE) {
   $blocks = array();

@@ -1,11 +1,11 @@
-name = ImageX
-description = Drupal installation profile for ImageX containing core configuration, features, modules and more.
+name = ImageX InstallKit
+description = A Drupal installation profile that enables immediate development to begin that provides a variety of advanced techniques and innovative thinking that is not commonly seen in the Drupal community.
 distribution_name = ImageX
 core = 7.x
-version = 7.x-dev
-; hidden = TRUE
+version = 7.x-1.x-dev
 
 ; Files
+files[] = includes/block.inc
 files[] = includes/install.inc
 files[] = includes/ImagexInstallKitInstallTask.inc
 files[] = includes/install/ImagexInstallKitInstallDefaultsTask.inc
@@ -28,7 +28,6 @@ dependencies[] = path
 dependencies[] = taxonomy
 dependencies[] = dblog
 dependencies[] = search
-; dependencies[] = simpletest
 dependencies[] = shortcut
 dependencies[] = toolbar
 dependencies[] = field_ui
@@ -44,10 +43,8 @@ dependencies[] = ctools
 dependencies[] = date
 dependencies[] = diff
 dependencies[] = entity
-; dependencies[] = entitycache ; Problem with the entity controller not loading.
 dependencies[] = entity_dependency
 dependencies[] = features
-; dependencies[] = features_extra
 dependencies[] = features_override
 dependencies[] = libraries
 dependencies[] = menu_attributes
@@ -67,21 +64,18 @@ dependencies[] = rules
 dependencies[] = session_api
 dependencies[] = strongarm
 dependencies[] = special_menu_items
-; dependencies[] = system_stream_wrapper
 dependencies[] = taxonomy_access_fix
 dependencies[] = token
 dependencies[] = uuid
 dependencies[] = uuid_features
 dependencies[] = views
 dependencies[] = views_bulk_operations
-; dependencies[] = webform
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex
 dependencies[] = imagex_bean
 dependencies[] = imagex_bean_permissions
 dependencies[] = imagex_common_fields
-; dependencies[] = imagex_dashboard
 dependencies[] = imagex_files
 dependencies[] = imagex_media
 dependencies[] = imagex_metatag

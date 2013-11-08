@@ -374,6 +374,12 @@ projects[imagex_panels][download][type] = "git"
 projects[imagex_panels][download][url] = "git@github.com:imagex/imagex_panels.git"
 projects[imagex_panels][download][branch] = "7.x-dev"
 
+projects[imagex_superuser][type] = "module"
+projects[imagex_superuser][subdir] = "imagex/modules"
+projects[imagex_superuser][download][type] = "git"
+projects[imagex_superuser][download][url] = "git@github.com:imagex/imagex_superuser.git"
+projects[imagex_superuser][download][branch] = "7.x-dev"
+
 projects[imagex_user_roles][type] = "module"
 projects[imagex_user_roles][subdir] = "imagex/modules"
 projects[imagex_user_roles][download][type] = "git"

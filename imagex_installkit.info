@@ -29,16 +29,18 @@ dependencies[] = taxonomy
 dependencies[] = dblog
 dependencies[] = search
 dependencies[] = shortcut
-dependencies[] = toolbar
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
 
 ; Drupal contrib modules to be installed and enabled.
+dependencies[] = admin_menu
 dependencies[] = admin_views
 dependencies[] = backup_migrate
 dependencies[] = better_exposed_filters
 dependencies[] = better_formats
+dependencies[] = context
+dependencies[] = context_ui
 dependencies[] = ctools
 dependencies[] = date
 dependencies[] = diff
@@ -69,6 +71,7 @@ dependencies[] = token
 dependencies[] = uuid
 dependencies[] = uuid_features
 dependencies[] = views
+dependencies[] = views_ui
 dependencies[] = views_bulk_operations
 
 ; ImageX modules and features to be installed and enabled.

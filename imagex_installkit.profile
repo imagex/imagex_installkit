@@ -4,6 +4,11 @@
  */
 
 /**
+ * Defines the watchdog type.
+ */
+define('IMAGEX_INSTALLKIT_WATCHDOG_TYPE', 'imagex_installkit');
+
+/**
  * Implements hook_flush_caches().
  */
 function imagex_installkit_flush_caches() {
@@ -94,4 +99,57 @@ function imagex_installkit_get_install_profiles() {
  */
 function imagex_installkit_block_rebuild_on_flush_caches() {
   return variable_get('imagex_installkit_block_rebuild_on_cache_flushes', TRUE);
+}
+
+/**
+ *
+ */
+function imagex_installkit_log($type, $message, array $variables = array()) {
+  watchdog(IMAGEX_INSTALLKIT_WATCHDOG_TYPE, $message, $variables, $type);
+}
+
+/**
+ * @param Exception $exception
+ */
+function imagex_installkit_log_exception(Exception $exception) {
+  imagex_installkit_log(WATCHDOG_ERROR, $exception->getMessage(), array(
+    'exception' => $exception,
+  ));
+}
+
+/**
+ * @param array $log_entry
+ */
+function imagex_installkit_watchdog(array $log_entry) {
+  if (drupal_is_cli() && function_exists('drush_log')) {
+    if (!is_array($log_entry['variables'])) {
+      $log_entry['variables'] = NULL;
+    }
+
+    $message = isset($log_entry['variables']) && !empty($log_entry['variables']) ? dt($log_entry['message'], $log_entry['variables']) : $log_entry['message'];
+    drush_log($message, _imagex_installkit_watchdog_severity_string($log_entry['severity']));
+  }
+}
+
+/**
+ * @param $severity
+ * @return string
+ */
+function _imagex_installkit_watchdog_severity_string($severity) {
+  switch ($severity) {
+    case WATCHDOG_EMERGENCY:
+    case WATCHDOG_ALERT:
+    case WATCHDOG_CRITICAL:
+    case WATCHDOG_ERROR:
+      return 'error';
+
+    case WATCHDOG_WARNING:
+      return 'warning';
+
+    case WATCHDOG_NOTICE:
+    case WATCHDOG_INFO:
+    case WATCHDOG_DEBUG:
+    default:
+      return 'notice';
+  }
 }

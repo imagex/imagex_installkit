@@ -60,6 +60,7 @@ dependencies[] = panels_ipe
 dependencies[] = panels_mini
 dependencies[] = pathauto
 dependencies[] = scheduler
+dependencies[] = radioactivity
 dependencies[] = redirect
 dependencies[] = remote_stream_wrapper
 dependencies[] = rules

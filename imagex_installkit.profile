@@ -102,14 +102,24 @@ function imagex_installkit_block_rebuild_on_flush_caches() {
 }
 
 /**
- *
+ * Log handler for logging watchdog like messages.
+ * 
+ * @param int $type
+ *   The watchdog severity level.
+ * @param string $message
+ *   The log message.
+ * @param array $variables
+ *   An array of variables.
  */
 function imagex_installkit_log($type, $message, array $variables = array()) {
   watchdog(IMAGEX_INSTALLKIT_WATCHDOG_TYPE, $message, $variables, $type);
 }
 
 /**
+ * Logs an exception.
+ * 
  * @param Exception $exception
+ *   The Exception object to log.
  */
 function imagex_installkit_log_exception(Exception $exception) {
   imagex_installkit_log(WATCHDOG_ERROR, $exception->getMessage(), array(
@@ -118,9 +128,11 @@ function imagex_installkit_log_exception(Exception $exception) {
 }
 
 /**
- * @param array $log_entry
+ * Implements hook_watchdog().
  */
 function imagex_installkit_watchdog(array $log_entry) {
+  // Attempt to assume we are using `drush`, therefore add this watchdog
+  // log to the drush log output.
   if (drupal_is_cli() && function_exists('drush_log')) {
     if (!is_array($log_entry['variables'])) {
       $log_entry['variables'] = NULL;
@@ -132,8 +144,13 @@ function imagex_installkit_watchdog(array $log_entry) {
 }
 
 /**
- * @param $severity
+ * Returns a string representation for Drush log for watchdog severity.
+ * 
+ *  @param $severity
+ *   A Drupal core's WATCHDOG severity level.
+ *
  * @return string
+ *   Returns a string representation for drush log.
  */
 function _imagex_installkit_watchdog_severity_string($severity) {
   switch ($severity) {

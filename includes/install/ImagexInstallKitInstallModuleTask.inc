@@ -15,19 +15,23 @@ class ImagexInstallKitInstallModuleTask extends ImagexInstallKitInstallTask {
    * {@inheritDoc}
    */
   public function execute() {
-    if (empty($this->arguments['module']) || empty($this->arguments['module name'])) {
+    if (empty($this->arguments['module'])) {
+      imagex_installkit_log(WATCHDOG_DEBUG, t('Unspecified module attempting to be enabled.'));
       return;
     }
 
-    if (module_enable(array($this->arguments['module']))) {
+    $enabled = module_enable(array($this->arguments['module']), TRUE);
+    if ($enabled) {
       $message = st('Installed module %module', array(
-        '%module' => $this->arguments['module name'],
+        '%module' => empty($this->arguments['module name']) ? $this->arguments['module'] : $this->arguments['module name'],
       ));
+      imagex_installkit_log(WATCHDOG_NOTICE, $message);
     }
     else {
       $message = st('Failed to install module %module', array(
-        '%module' => $this->arguments['module name'],
+        '%module' => empty($this->arguments['module name']) ? $this->arguments['module'] : $this->arguments['module name'],
       ));
+      imagex_installkit_log(WATCHDOG_ERROR, $message);
     }
 
     $this->context['message'] = $message;

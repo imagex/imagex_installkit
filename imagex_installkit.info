@@ -1,6 +1,6 @@
 name = ImageX InstallKit
 description = A Drupal installation profile that enables immediate development to begin that provides a variety of advanced techniques and innovative thinking that is not commonly seen in the Drupal community.
-distribution_name = ImageX
+distribution_name = ImageX InstallKit
 core = 7.x
 version = 7.x-1.x-dev
 

@@ -93,6 +93,5 @@ dependencies[] = imagex_vocabulary_tags
 dependencies[] = imagex_vocabulary_tags_field
 dependencies[] = imagex_vocabulary_tags_permissions
 dependencies[] = imagex_workflow
-dependencies[] = imagex_workflow_permissions
 dependencies[] = imagex_wysiwyg_profiles
 dependencies[] = imagex_wysiwyg_profiles_permissions

@@ -17,3 +17,6 @@ projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/co
 
 ; Resolves the undefined tab_root_map variable in menu translate problems.
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/undefined-menu-translate-notice-951098-50.patch"
+
+; Resolves file entity field properties being overwritten.
+projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/2066275-file-field-load-merge-order.patch"

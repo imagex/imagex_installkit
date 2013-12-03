@@ -13,7 +13,7 @@ projects[drupal][download][url] = http://git.drupal.org/project/drupal.git
 
 ; Deprecated patch for core that allows only a single profile to be inherited.
 ; This patch is no longer used in favor of the multi-inheritable profiles patch.
-projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/inheritable-profiles/1356276-D7-inheritable-profiles-multi.patch"
+projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/inheritable-profiles/1356276-D7-inhertiable-profiles-multi-enforce-dependencies.patch"
 
 ; Resolves the undefined tab_root_map variable in menu translate problems.
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/undefined-menu-translate-notice-951098-50.patch"

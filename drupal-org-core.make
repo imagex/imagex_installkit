@@ -16,6 +16,3 @@ projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/co
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/undefined-menu-translate-notice-951098-50.patch"
 ; Resolves file entity field properties being overwritten.
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/2066275-file-field-load-merge-order.patch"
-; Resolves issue with file field presave creating empty file records.
-; projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/file_field_presave-file-load-check.patch"
-projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/hook_entity_presave-for-uuid_features-import-fixes.patch"

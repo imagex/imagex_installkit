@@ -85,6 +85,7 @@ dependencies[] = imagex_metatag
 dependencies[] = imagex_page
 dependencies[] = imagex_page_workflow
 dependencies[] = imagex_panels
+dependencies[] = imagex_superuser
 dependencies[] = imagex_user_roles
 dependencies[] = imagex_user_permissions
 dependencies[] = imagex_vocabulary_tags

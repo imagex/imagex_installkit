@@ -65,6 +65,7 @@ dependencies[] = panels
 dependencies[] = panels_ipe
 dependencies[] = panels_mini
 dependencies[] = pathauto
+dependencies[] = print
 dependencies[] = scheduler
 dependencies[] = redirect
 dependencies[] = remote_stream_wrapper

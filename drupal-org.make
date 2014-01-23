@@ -359,7 +359,7 @@ projects[imagex_media][type] = "module"
 projects[imagex_media][subdir] = "imagex/modules"
 projects[imagex_media][download][type] = "git"
 projects[imagex_media][download][url] = "git@github.com:imagex/imagex_media.git"
-projects[imagex_media][download][tag] = "7.x-1.0.1"
+projects[imagex_media][download][tag] = "7.x-1.0.2"
 
 projects[imagex_metatag][type] = "module"
 projects[imagex_metatag][subdir] = "imagex/modules"

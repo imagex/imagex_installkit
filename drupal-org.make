@@ -335,7 +335,7 @@ projects[parrot][version] = "1.x-dev"
 projects[imagex][type] = "module"
 projects[imagex][download][type] = "git"
 projects[imagex][download][url] = "git@github.com:imagex/imagex.git"
-projects[imagex][download][tag] = "7.x-1.0"
+projects[imagex][download][tag] = "7.x-1.0.1-dev1"
 
 projects[imagex_bean][type] = "module"
 projects[imagex_bean][subdir] = "imagex/modules"

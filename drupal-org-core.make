@@ -14,3 +14,5 @@ projects[drupal][version] = "7.26"
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/inheritable-profiles/1356276-D7-inhertiable-profiles-multi-enforce-dependencies.patch"
 ; Resolves the undefined tab_root_map variable in menu translate problems.
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/undefined-menu-translate-notice-951098-50.patch"
+; Introduces a new alter hook for UUID Menu Links module
+projects[drupal][patch][] = "https://raw.github.com/amcgowanca/uuid_menu_links/7.x-0.2/patches/menu_get_object-load-type-alter.patch"

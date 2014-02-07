@@ -3,3 +3,4 @@ modules/*
 libraries/*/*
 themes/*/*
 PATCHES.txt
+*.rej

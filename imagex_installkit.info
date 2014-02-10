@@ -8,8 +8,9 @@ version = 7.x-1.x-dev
 files[] = includes/block.inc
 files[] = includes/install.inc
 files[] = includes/ImagexInstallKitInstallTask.inc
-files[] = includes/install/ImagexInstallKitInstallDefaultsTask.inc
-files[] = includes/install/ImagexInstallKitInstallModuleTask.inc
+files[] = includes/ImagexInstallKitInstallCallbackTask.inc
+files[] = includes/ImagexInstallKitInstallDefaultsTask.inc
+files[] = includes/ImagexInstallKitInstallModuleTask.inc
 
 ; Drupal core modules to be installed and enabled.
 dependencies[] = block

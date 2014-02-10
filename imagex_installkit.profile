@@ -1,6 +1,13 @@
 <?php
 /**
- * @file
+ * This file is part of ImageX InstallKit.
+ *
+ * (c) ImageX Media Inc. (www.imagexmedia.com)
+ *
+ * This source file is subject to the GPL version 2 license that is
+ * bundled with this source code in the file LICENSE.md.
+ *
+ * Drupal is a registered trademark of Dries Buytaert (www.buytaert.com).
  */
 
 /**
@@ -42,7 +49,6 @@ function imagex_installkit_load_include($type, $name) {
       return $file;
     }
   }
-
   return FALSE;
 }
 
@@ -140,6 +146,27 @@ function imagex_installkit_watchdog(array $log_entry) {
 
     $message = isset($log_entry['variables']) && !empty($log_entry['variables']) ? dt($log_entry['message'], $log_entry['variables']) : $log_entry['message'];
     drush_log($message, _imagex_installkit_watchdog_severity_string($log_entry['severity']));
+  }
+}
+
+/**
+ * Pass alterable variables to PROFILE_TYPE_alter().
+ *
+ * @param string $type
+ *   The type to alter.
+ * @param mixed $data
+ *   The data to alter, passed by reference.
+ * @param mixed $context1
+ *   An additional variable that is passed by reference, optional.
+ * @param mixed $context2
+ *   An additional variable that is passed by reference, optional.
+ */
+function imagex_installkit_profile_alter($type, &$data, &$context1 = NULL, &$context2 = NULL) {
+  foreach (imagex_installkit_get_install_profiles() as $profile) {
+    $function = $profile . '_' . $type . '_alter';
+    if (function_exists($function)) {
+      $function($data, $context1, $context2);
+    }
   }
 }
 

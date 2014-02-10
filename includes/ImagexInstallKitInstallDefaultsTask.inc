@@ -1,6 +1,13 @@
 <?php
 /**
- * @file
+ * This file is part of ImageX InstallKit.
+ *
+ * (c) ImageX Media Inc. (www.imagexmedia.com)
+ *
+ * This source file is subject to the GPL version 2 license that is
+ * bundled with this source code in the file LICENSE.md.
+ *
+ * Drupal is a registered trademark of Dries Buytaert (www.buytaert.com).
  */
 
 /**
@@ -67,6 +74,11 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
     // Time to retrieve and configure any defined blocks.
     imagex_installkit_load_include('inc', 'includes/block');
     imagex_installkit_block_rebuild(TRUE);
+
+    // If the UUID Menu Links module exists, let's synchronize all links and paths.
+    if (module_exists('uuid_menu_links')) {
+      uuid_menu_links_sync();
+    }
 
     // Set and share the completion message.
     $this->context['message'] = st('Default configuration and setup complete');

@@ -1,7 +1,24 @@
 <?php
 /**
- * @file
+ * This file is part of ImageX InstallKit.
+ *
+ * (c) ImageX Media Inc. (www.imagexmedia.com)
+ *
+ * This source file is subject to the GPL version 2 license that is
+ * bundled with this source code in the file LICENSE.md.
+ *
+ * Drupal is a registered trademark of Dries Buytaert (www.buytaert.com).
  */
+
+/**
+ * Denotes a module install operation type.
+ */
+define('IMAGEX_INSTALLKIT_INSTALLOP_MODULE', 'module');
+
+/**
+ * Denotes the default task install operation type.
+ */
+define('IMAGEX_INSTALLKIT_INSTALLOP_DEFAULT_TASKS', 'default tasks');
 
 /**
  * Bootstraps the installation tasks by altering core install tasks.
@@ -31,34 +48,21 @@ function imagex_installkit_install_bootstrap(&$tasks, &$install_state) {
  * @return array
  *   Returns a batch information to perform the installation.
  */
+// TODO: Need to add the retrieval of all defined install tasks.
 function imagex_installkit_install_profile(&$install_state) {
   $operations = array();
 
-  // TODO: Need to add the retrieval of all defined install tasks.
-  // Retrieve the `core` defined modules installation batch and alter them.
-  $initial_batch = install_profile_modules($install_state);
-  foreach ($initial_batch['operations'] as $module_batch) {
-    if (!isset($module_batch[1])) {
-      continue;
-    }
-    $module_batch_info = $module_batch[1];
-    $operations[] = array('_imagex_installkit_install_profile_execute_task', array(
-      'ImagexInstallKitInstallModuleTask',
-      array(
-        'module' => $module_batch_info[0],
-        'module name' => $module_batch_info[1],
-      ),
-    ));
-  }
+  // Retrieve all modules required to be installed during the installation.
+  _imagex_installkit_install_profile_modules($install_state, $operations);
 
   // Attach the default configuration after the module installations.
-  $operations[] = array('_imagex_installkit_install_profile_execute_task', array(
+  $operations['default_tasks'] = array('_imagex_installkit_install_profile_execute_task', array(
     'ImagexInstallKitInstallDefaultsTask',
     array(),
   ));
 
   // Allow for inherited profiles to alter the installation tasks.
-  drupal_alter('imagex_installkit_install_tasks_alter', $operations);
+  imagex_installkit_profile_alter('imagex_installkit_install_tasks', $operations);
 
   // Setup the final batch information and return.
   $batch = array(
@@ -69,7 +73,6 @@ function imagex_installkit_install_profile(&$install_state) {
     'error_message' => st('The installation has encountered an error.'),
     'finished' => 'imagex_installkit_install_profile_finished',
   );
-
   return $batch;
 }
 
@@ -77,8 +80,7 @@ function imagex_installkit_install_profile(&$install_state) {
  * Invoked at the end of the profile installation (batch operations) step.
  */
 function imagex_installkit_install_profile_finished() {
-  // Flush and clear all caches.
-  drupal_flush_all_caches();
+  // Empty.
 }
 
 /**
@@ -88,6 +90,9 @@ function imagex_installkit_install_profile_finished() {
  *
  * @param array $install_state
  *   An array of the current installation state.
+ *
+ * @return string
+ *   Returns an empty string if CLI, otherwise redirects to <front>.
  */
 function imagex_installkit_install_finished(&$install_state) {
   // Flush all caches to ensure that any full bootstraps during the installer
@@ -146,7 +151,7 @@ function imagex_installkit_install_finished(&$install_state) {
  */
 function _imagex_installkit_install_profile_execute_task($class_name, array $arguments, &$context) {
   imagex_installkit_load_include('inc', 'includes/ImagexInstallKitInstallTask');
-  imagex_installkit_load_include('inc', 'includes/install/' . $class_name);
+  imagex_installkit_load_include('inc', 'includes/' . $class_name);
 
   try {
     $reflection = new ReflectionClass($class_name);
@@ -158,18 +163,74 @@ function _imagex_installkit_install_profile_execute_task($class_name, array $arg
       throw new Exception(st('The install task class is not instantiatable.'));
     }
 
-    // Create a new instance of the task class using the reflector.
+    // Create a new instance of the task class using reflection,
+    // initialize and execute the install task.
     $instance = $reflection->newInstance();
-
-    // Setup the installation task.
     $instance->setContext($context);
     $instance->setArguments($arguments);
-
-    // And ... execute, let the magic happen.
     $instance->execute();
   }
   catch (Exception $exception) {
-    // TODO: Improve handling of caught exceptions.
+    imagex_installkit_log_exception($exception);
     throw $exception;
+  }
+}
+
+/**
+ * Initializes the module install operations, retrieving modules and creating batch.
+ *
+ * @param array $install_state
+ *   The current install state.
+ * @param array $operations
+ *   An array of batch operations to populate with module install, passed by reference.
+ */
+function _imagex_installkit_install_profile_modules(&$install_state, &$operations) {
+  $modules = variable_get('install_profile_modules', array());
+  $files = system_rebuild_module_data();
+  variable_del('install_profile_modules');
+
+  // Enforce that installation profiles are required and required by.
+  for ($i = 0, $size = count($install_state['profiles']) - 1; $i < $size; $i++) {
+    $files[$install_state['profiles'][$i + 1]]->required_by[] = $install_state['profiles'][$i];
+    $files[$install_state['profiles'][$i]]->requires[$install_state['profiles'][$i + 1]] = array(
+      'name' => $install_state['profiles'][$i + 1],
+    );
+  }
+
+  $files[$install_state['profiles'][0]]->info['required'] = FALSE;
+
+  foreach ($modules as $module) {
+    if ($files[$module]->requires) {
+      $modules = array_merge($modules, array_keys($files[$module]->requires));
+    }
+  }
+
+  $required = array();
+  $non_required = array();
+
+  $modules = array_unique($modules);
+  foreach ($modules as $module) {
+    if (!empty($files[$module]->info['required'])) {
+      $required[$module] = $files[$module]->sort;
+    }
+    else {
+      $non_required[$module] = $files[$module]->sort;
+    }
+  }
+
+  // Allow other installation profiles to alter the profile modules.
+  imagex_installkit_profile_alter('imagex_installkit_install_profile_modules', $required, $non_required);
+
+  // Sort modules while maintaining key index.
+  arsort($required);
+  arsort($non_required);
+
+  // Create the installation batch operations for installing each module,
+  foreach ($required + $non_required as $module => $weight) {
+    $key = IMAGEX_INSTALLKIT_INSTALLOP_MODULE . ':' . $module;
+    $operations[$key] = array('_imagex_installkit_install_profile_execute_task', array(
+      'ImagexInstallKitInstallModuleTask',
+      array('module' => $module, 'module name' => $files[$module]->info['name']),
+    ));
   }
 }

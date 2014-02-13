@@ -60,7 +60,7 @@ function hook_imagex_installkit_install_tasks_alter(array &$tasks) {
  * @param array $non_required
  *   An array of `non-required` modules, passed by reference.
  */
-function hook_imagex_installkit_install_profile_modules(array &$required, array &$non_required) {
+function hook_imagex_installkit_install_profile_modules_alter(array &$required, array &$non_required) {
   // TODO: Provide example of how to alter.
 }
 

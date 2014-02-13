@@ -197,3 +197,22 @@ function _imagex_installkit_watchdog_severity_string($severity) {
       return 'notice';
   }
 }
+
+/**
+ * Implements hook_imagex_installkit_install_profile_modules_alter().
+ */
+function imagex_installkit_imagex_installkit_install_profile_modules_alter(&$required, &$non_required) {
+  // TODO: Improve the re-ordering of installkit's module install order of ops.
+  // The UUID module does not require the dependencies for
+  // the File module and therefore due to regular Drupal sorting and ordering
+  // during the module list rebuild, UUID will be installed prior to File and as a
+  // result the File entity will not have the UUID column added. This is problematic.
+  if ($non_required['uuid'] > $non_required['file']) {
+    // Swap the weights of the UUID and File should UUID's weight be
+    // greater then the File contrib module.
+    $weight = $non_required['uuid'];
+    $non_required['uuid'] = $non_required['file'];
+    $non_required['file'] = $weight;
+    unset($weight);
+  }
+}

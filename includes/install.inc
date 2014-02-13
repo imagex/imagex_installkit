@@ -80,21 +80,6 @@ function imagex_installkit_install_profile(&$install_state) {
  * Invoked at the end of the profile installation (batch operations) step.
  */
 function imagex_installkit_install_profile_finished() {
-  // Empty.
-}
-
-/**
- * Overrides the install_finished().
- *
- * Much of this function's implementation is the duplicated.
- *
- * @param array $install_state
- *   An array of the current installation state.
- *
- * @return string
- *   Returns an empty string if CLI, otherwise redirects to <front>.
- */
-function imagex_installkit_install_finished(&$install_state) {
   // Flush all caches to ensure that any full bootstraps during the installer
   // do not leave stale cached data, and that any content types or other items
   // registered by the installation profile are registered correctly.
@@ -123,7 +108,20 @@ function imagex_installkit_install_finished(&$install_state) {
   // do not leave stale cached data, and that any content types or other items
   // registered by the installation profile are registered correctly.
   drupal_cron_run();
+}
 
+/**
+ * Overrides the install_finished().
+ *
+ * Much of this function's implementation is the duplicated.
+ *
+ * @param array $install_state
+ *   An array of the current installation state.
+ *
+ * @return string
+ *   Returns an empty string if CLI, otherwise redirects to <front>.
+ */
+function imagex_installkit_install_finished(&$install_state) {
   // If not in CLI, perform a redirect to front page.
   if (!drupal_is_cli()) {
     drupal_goto();
@@ -190,24 +188,29 @@ function _imagex_installkit_install_profile_modules(&$install_state, &$operation
   variable_del('install_profile_modules');
 
   // Enforce that installation profiles are required and required by.
-  for ($i = 0, $size = count($install_state['profiles']) - 1; $i < $size; $i++) {
+  $profile_count = count($install_state['profiles']);
+  for ($i = 0, $size = $profile_count - 1; $i < $size; $i++) {
+    $files[$install_state['profiles'][$i]]->info['required'] = FALSE;
     $files[$install_state['profiles'][$i + 1]]->required_by[] = $install_state['profiles'][$i];
     $files[$install_state['profiles'][$i]]->requires[$install_state['profiles'][$i + 1]] = array(
       'name' => $install_state['profiles'][$i + 1],
     );
   }
+  // The absolute root profile (e.g. imagex_installkit) does not get its required
+  // flag set to a boolean false in the for loop above; set it here.
+  $files[$install_state['profiles'][$profile_count - 1]]->info['required'] = FALSE;
 
-  $files[$install_state['profiles'][0]]->info['required'] = FALSE;
-
+  // Add modules that other modules depend on.
   foreach ($modules as $module) {
     if ($files[$module]->requires) {
       $modules = array_merge($modules, array_keys($files[$module]->requires));
     }
   }
+  unset($module);
 
+  // Always install required modules first. Respect the dependencies between the modules.
   $required = array();
   $non_required = array();
-
   $modules = array_unique($modules);
   foreach ($modules as $module) {
     if (!empty($files[$module]->info['required'])) {
@@ -217,6 +220,7 @@ function _imagex_installkit_install_profile_modules(&$install_state, &$operation
       $non_required[$module] = $files[$module]->sort;
     }
   }
+  unset($module);
 
   // Allow other installation profiles to alter the profile modules.
   imagex_installkit_profile_alter('imagex_installkit_install_profile_modules', $required, $non_required);
@@ -226,11 +230,13 @@ function _imagex_installkit_install_profile_modules(&$install_state, &$operation
   arsort($non_required);
 
   // Create the installation batch operations for installing each module,
-  foreach ($required + $non_required as $module => $weight) {
+  $modules = $required + $non_required;
+  foreach ($modules as $module => $weight) {
     $key = IMAGEX_INSTALLKIT_INSTALLOP_MODULE . ':' . $module;
     $operations[$key] = array('_imagex_installkit_install_profile_execute_task', array(
       'ImagexInstallKitInstallModuleTask',
       array('module' => $module, 'module name' => $files[$module]->info['name']),
     ));
   }
+  unset($weight, $modules);
 }

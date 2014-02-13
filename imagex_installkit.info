@@ -43,6 +43,7 @@ dependencies[] = better_formats
 dependencies[] = context
 dependencies[] = context_ui
 dependencies[] = ctools
+dependencies[] = bulk_export
 dependencies[] = date
 dependencies[] = ds
 dependencies[] = ds_extras

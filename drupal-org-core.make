@@ -15,4 +15,4 @@ projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/co
 ; Resolves the undefined tab_root_map variable in menu translate problems.
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/undefined-menu-translate-notice-951098-50.patch"
 ; Introduces a new alter hook for UUID Menu Links module
-projects[drupal][patch][] = "https://raw2.github.com/amcgowanca/drupal_uuid_menu_links/7.x-0.4.3/patches/menu_get_object-load-type-alter.patch"
+projects[drupal][patch][] = "https://raw2.github.com/amcgowanca/drupal_uuid_menu_links/7.x-0.4.4/patches/menu_get_object-load-type-alter.patch"

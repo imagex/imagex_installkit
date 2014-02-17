@@ -7,6 +7,8 @@ version = 7.x-1.x-dev
 ; Files
 files[] = includes/block.inc
 files[] = includes/install.inc
+files[] = includes/ImagexInstallKitException.inc
+files[] = includes/ImagexInstallKitInstallTaskInterface.inc
 files[] = includes/ImagexInstallKitInstallTask.inc
 files[] = includes/ImagexInstallKitInstallCallbackTask.inc
 files[] = includes/ImagexInstallKitInstallDefaultsTask.inc

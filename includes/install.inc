@@ -29,13 +29,39 @@ define('IMAGEX_INSTALLKIT_INSTALLOP_DEFAULT_TASKS', 'default tasks');
  *   An array of the current installation state.
  */
 function imagex_installkit_install_bootstrap(&$tasks, &$install_state) {
-  $install_state['imagex'] = array();
+  imagex_installkit_load_include('inc', 'includes/ImagexInstallKitException');
+  imagex_installkit_load_include('inc', 'includes/ImagexInstallKitInstallTaskInterface');
+  imagex_installkit_load_include('inc', 'includes/ImagexInstallKitInstallTask');
 
+  $install_state['imagex'] = array();
+  $original_tasks = $tasks;
+  // Re-create the installation tasks originally created by Drupal core.
+  $tasks = array(
+    'install_select_profile' => $original_tasks['install_select_profile'],
+    'install_load_profile' => $original_tasks['install_load_profile'],
+    'install_select_locale' => $original_tasks['install_select_locale'],
+    'install_verify_requirements' => $original_tasks['install_verify_requirements'],
+    'install_settings_form' => $original_tasks['install_settings_form'],
+    'install_system_module' => $original_tasks['install_system_module'],
+    'install_bootstrap_full' => $original_tasks['install_bootstrap_full'],
+    'install_profile_modules' => $original_tasks['install_profile_modules'],
+    'install_profile_tasks' => array(
+      'type' => 'batch',
+      'display_name' => st('Install tasks'),
+      'function' => 'imagex_installkit_install_profile_tasks',
+    ),
+    'install_import_locales' => $original_tasks['install_import_locales'],
+    'install_configure_form' => $original_tasks['install_configure_form'],
+    'install_import_locales_remaining' => $original_tasks['install_import_locales_remaining'],
+    'install_finished' => $original_tasks['install_finished'],
+  );
+  unset($original_tasks);
+  // Do not display the locale selection and set the default to english.
   $tasks['install_select_locale']['display'] = FALSE;
   $tasks['install_select_locale']['run'] = INSTALL_TASK_SKIP;
   $install_state['parameters']['locale'] = 'en';
-
-  $tasks['install_profile_modules']['function'] = 'imagex_installkit_install_profile';
+  // Alter the callback function for module installation and finished tasks.
+  $tasks['install_profile_modules']['function'] = 'imagex_installkit_install_profile_modules';
   $tasks['install_finished']['function'] = 'imagex_installkit_install_finished';
 }
 
@@ -46,32 +72,25 @@ function imagex_installkit_install_bootstrap(&$tasks, &$install_state) {
  *   An array of the current installation state.
  * 
  * @return array
- *   Returns a batch information to perform the installation.
+ *   Returns an array of batch information for performing the task execution.
  */
-// TODO: Need to add the retrieval of all defined install tasks.
-function imagex_installkit_install_profile(&$install_state) {
+function imagex_installkit_install_profile_modules(&$install_state) {
   $operations = array();
 
   // Retrieve all modules required to be installed during the installation.
   _imagex_installkit_install_profile_modules($install_state, $operations);
 
-  // Attach the default configuration after the module installations.
-  $operations['default_tasks'] = array('_imagex_installkit_install_profile_execute_task', array(
-    'ImagexInstallKitInstallDefaultsTask',
-    array(),
-  ));
-
-  // Allow for inherited profiles to alter the installation tasks.
-  imagex_installkit_profile_alter('imagex_installkit_install_tasks', $operations);
+  // Allow for inherited profiles to alter the installation of dependencies.
+  imagex_installkit_profile_alter('imagex_installkit_install_profile_modules', $operations);
 
   // Setup the final batch information and return.
   $batch = array(
     'operations' => $operations,
-    'title' => st('Install @drupal', array(
+    'title' => st('Install @drupal modules', array(
       '@drupal' => drupal_install_profile_distribution_name(),
     )),
     'error_message' => st('The installation has encountered an error.'),
-    'finished' => 'imagex_installkit_install_profile_finished',
+    'finished' => 'imagex_installkit_install_profile_modules_finished',
   );
   return $batch;
 }
@@ -79,7 +98,7 @@ function imagex_installkit_install_profile(&$install_state) {
 /**
  * Invoked at the end of the profile installation (batch operations) step.
  */
-function imagex_installkit_install_profile_finished() {
+function imagex_installkit_install_profile_modules_finished() {
   // Flush all caches to ensure that any full bootstraps during the installer
   // do not leave stale cached data, and that any content types or other items
   // registered by the installation profile are registered correctly.
@@ -111,6 +130,47 @@ function imagex_installkit_install_profile_finished() {
 }
 
 /**
+ * Handles the core installation of tasks defined by an installation profile.
+ *
+ * @param $install_state
+ *   An array of the current installation state.
+ *
+ * @return array
+ *   Returns an array of batch information for performing the task execution.
+ */
+// TODO: Need to add the retrieval of all defined install tasks.
+function imagex_installkit_install_profile_tasks(&$install_state) {
+  $operations = array();
+
+  // Attach the default configuration after the module installations.
+  $operations['default_tasks'] = array('imagex_installkit_install_task_execution_handler', array(
+    'ImagexInstallKitInstallDefaultsTask',
+    array(),
+  ));
+
+  // Allow inheritable profiles to alter the installation tasks.
+  imagex_installkit_profile_alter('imagex_installkit_install_profile_tasks', $operations);
+
+  // Setup the final batch information and return.
+  $batch = array(
+    'operations' => $operations,
+    'title' => st('Install @drupal tasks', array(
+      '@drupal' => drupal_install_profile_distribution_name(),
+    )),
+    'error_message' => st('The installation has encountered an error.'),
+    'finished' => 'imagex_installkit_install_profile_tasks_finished',
+  );
+  return $batch;
+}
+
+/**
+ * Invoked at the end of the task installation step.
+ */
+function imagex_installkit_install_profile_tasks_finished() {
+  // Empty, this is a placeholder for future implementation.
+}
+
+/**
  * Overrides the install_finished().
  *
  * Much of this function's implementation is the duplicated.
@@ -136,7 +196,7 @@ function imagex_installkit_install_finished(&$install_state) {
 /**
  * Handles the execution of a single installation task.
  * 
- * @param string $class_name
+ * @param string $classname
  *   An installation task class name to instantiate and invoke. Must be of type
  *   ImagexInstallTask.
  * @param array  $arguments
@@ -147,26 +207,36 @@ function imagex_installkit_install_finished(&$install_state) {
  * @throws Exception
  *   Throws an Exception for various reasons.
  */
-function _imagex_installkit_install_profile_execute_task($class_name, array $arguments, &$context) {
-  imagex_installkit_load_include('inc', 'includes/ImagexInstallKitInstallTask');
-  imagex_installkit_load_include('inc', 'includes/' . $class_name);
-
+function imagex_installkit_install_task_execution_handler($classname, array $arguments, &$context) {
   try {
-    $reflection = new ReflectionClass($class_name);
-    if (!$reflection->isSubclassOf('ImagexInstallKitInstallTask')) {
-      throw new Exception(st('The specified install task cannot be instantiated, it is not an instance of ImagexInstallKitInstallTask.'));
+    // Attempt to include the class file, imagex_installkit_load_include will return FALSE
+    // if the file was unable to be included for whatever reason.
+    if (!imagex_installkit_load_include('inc', 'includes/' . $classname)) {
+      throw new ImagexInstallKitException(st('Unable to include ImagexInstallKitInstallTask class @classname.', array(
+        '@classname' => $classname,
+      )));
     }
 
+    // Create a new reflection class instance.
+    $reflection = new ReflectionClass($classname);
+    // Enforce that the task in question implements the install task interface.
+    if (!$reflection->implementsInterface('ImagexInstallKitInstallTaskInterface')) {
+      throw new ImagexInstallKitException(st('Install task @classname does not implement interface ImagexInstallKitInstallTaskInterface.', array(
+        '@classname' => $classname,
+      )));
+    }
+    // Ensure the task is instantiatable prior to continuing, if not throw an exception.
     if (!$reflection->isInstantiable()) {
-      throw new Exception(st('The install task class is not instantiatable.'));
+      throw new ImagexInstallKitException(st('Install task @classname is not instantiatable.', array('@classname' => $classname)));
     }
 
-    // Create a new instance of the task class using reflection,
-    // initialize and execute the install task.
     $instance = $reflection->newInstance();
-    $instance->setContext($context);
-    $instance->setArguments($arguments);
-    $instance->execute();
+    $reflection->getMethod('setContext')
+      ->invoke($instance, $context);
+    $reflection->getMethod('setArguments')
+      ->invoke($instance, $arguments);
+    $reflection->getMethod('execute')
+      ->invoke($instance);
   }
   catch (Exception $exception) {
     imagex_installkit_log_exception($exception);
@@ -233,7 +303,7 @@ function _imagex_installkit_install_profile_modules(&$install_state, &$operation
   $modules = $required + $non_required;
   foreach ($modules as $module => $weight) {
     $key = IMAGEX_INSTALLKIT_INSTALLOP_MODULE . ':' . $module;
-    $operations[$key] = array('_imagex_installkit_install_profile_execute_task', array(
+    $operations[$key] = array('imagex_installkit_install_task_execution_handler', array(
       'ImagexInstallKitInstallModuleTask',
       array('module' => $module, 'module name' => $files[$module]->info['name']),
     ));

@@ -17,7 +17,7 @@
  * @package ImageX.InstallKit.Install
  * @version 1.0.0
  */
-abstract class ImagexInstallKitInstallTask {
+abstract class ImagexInstallKitInstallTask implements ImagexInstallKitInstallTaskInterface {
   /**
    * @var array
    *   An array of arguments for processing.
@@ -40,14 +40,7 @@ abstract class ImagexInstallKitInstallTask {
   }
 
   /**
-   * Sets the contextual information for this task.
-   *
-   * @access public
-   * @param array $context
-   *   An array of contextual information.
-   *
-   * @return $this
-   *   Returns this instance of the ImagexInstallTask.
+   * {@inheritDoc}
    */
   final public function setContext(array &$context) {
     $this->context = $context;
@@ -55,24 +48,10 @@ abstract class ImagexInstallKitInstallTask {
   }
 
   /**
-   * Sets the arguments to be used within the `execute()` of this task.
-   *
-   * @access public
-   * @param array $arguments
-   *   A keyed array of arguments to set.
-   *
-   * @return $this
-   *   Returns this instance of the ImagexInstallTask.
+   * {@inheritDoc}
    */
   final public function setArguments(array $arguments) {
     $this->arguments = $arguments;
     return $this;
   }
-
-  /**
-   * Performs the operations for this installation task.
-   *
-   * @access public
-   */
-  abstract public function execute();
 }

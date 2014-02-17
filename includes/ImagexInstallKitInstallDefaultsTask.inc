@@ -80,6 +80,8 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
       uuid_menu_links_sync();
     }
 
+    variable_set('page_manager_node_view_disabled', FALSE);
+
     // Set and share the completion message.
     $this->context['message'] = st('Default configuration and setup complete');
   }

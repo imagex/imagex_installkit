@@ -100,7 +100,6 @@ dependencies[] = imagex_panels
 dependencies[] = imagex_user_roles
 dependencies[] = imagex_user_permissions
 dependencies[] = imagex_vocabulary_tags
-dependencies[] = imagex_vocabulary_tags_field
 dependencies[] = imagex_vocabulary_tags_permissions
 dependencies[] = imagex_workflow
 dependencies[] = imagex_wysiwyg_profiles

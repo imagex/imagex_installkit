@@ -330,6 +330,7 @@ projects[shiny][version] = "1.3"
 projects[mothership][type] = "theme"
 projects[mothership][version] = "2.10"
 projects[mothership][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/themes/mothership/Add-views-classes-2033235-16.patch"
+projects[mothership][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/themes/mothership/maintenance-page-template.patch.patch"
 projects[parrot][type] = "theme"
 projects[parrot][version] = "1.x-dev"
 

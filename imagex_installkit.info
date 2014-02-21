@@ -81,6 +81,7 @@ dependencies[] = taxonomy_access_fix
 dependencies[] = token
 dependencies[] = uuid
 dependencies[] = uuid_features
+dependencies[] = uuid_features_helper
 dependencies[] = uuid_menu_links
 dependencies[] = views
 dependencies[] = views_ui

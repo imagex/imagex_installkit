@@ -191,6 +191,7 @@ projects[panelizer][download][revision] = "ca7e1cb87e258b97fbeeac9d8641e069a3e35
 projects[panels][type] = "module"
 projects[panels][subdir] = "contrib"
 projects[panels][version] = "3.4"
+projects[panels][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/contrib/panels/panels_ipe-title-ctools-2012188-3.patch"
 projects[panels_breadcrumbs][type] = "module"
 projects[panels_breadcrumbs][subdir] = "contrib"
 projects[panels_breadcrumbs][version] = "2.1"

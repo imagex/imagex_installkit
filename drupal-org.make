@@ -376,7 +376,7 @@ projects[imagex_metatag][type] = "module"
 projects[imagex_metatag][subdir] = "imagex/modules"
 projects[imagex_metatag][download][type] = "git"
 projects[imagex_metatag][download][url] = "git@github.com:imagex/imagex_metatag.git"
-projects[imagex_metatag][download][tag] = "7.x-1.0"
+projects[imagex_metatag][download][tag] = "7.x-1.0.1"
 
 projects[imagex_page][type] = "module"
 projects[imagex_page][subdir] = "imagex/modules"

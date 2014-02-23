@@ -406,7 +406,7 @@ projects[imagex_vocabulary_tags][type] = "module"
 projects[imagex_vocabulary_tags][subdir] = "imagex/modules"
 projects[imagex_vocabulary_tags][download][type] = "git"
 projects[imagex_vocabulary_tags][download][url] = "git@github.com:imagex/imagex_vocabulary_tags.git"
-projects[imagex_vocabulary_tags][download][tag] = "7.x-1.0.0-dev1"
+projects[imagex_vocabulary_tags][download][tag] = "7.x-1.0.1"
 
 projects[imagex_widgets][type] = "module"
 projects[imagex_widgets][subdir] = "imagex/modules"

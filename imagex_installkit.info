@@ -86,6 +86,7 @@ dependencies[] = uuid_menu_links
 dependencies[] = views
 dependencies[] = views_ui
 dependencies[] = views_bulk_operations
+dependencies[] = views_content_cache
 
 ; ImageX modules and features to be installed and enabled.
 dependencies[] = imagex

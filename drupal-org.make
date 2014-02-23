@@ -418,7 +418,7 @@ projects[imagex_workflow][type] = "module"
 projects[imagex_workflow][subdir] = "imagex/modules"
 projects[imagex_workflow][download][type] = "git"
 projects[imagex_workflow][download][url] = "git@github.com:imagex/imagex_workflow.git"
-projects[imagex_workflow][download][tag] = "7.x-1.0"
+projects[imagex_workflow][download][tag] = "7.x-1.0.1"
 
 projects[imagex_wysiwyg_profiles][type] = "module"
 projects[imagex_wysiwyg_profiles][subdir] = "imagex/modules"

@@ -358,7 +358,7 @@ projects[imagex_common_fields][type] = "module"
 projects[imagex_common_fields][subdir] = "imagex/modules"
 projects[imagex_common_fields][download][type] = "git"
 projects[imagex_common_fields][download][url] = "git@github.com:imagex/imagex_common_fields.git"
-projects[imagex_common_fields][download][tag] = "7.x-1.0.0-dev1"
+projects[imagex_common_fields][download][tag] = "7.x-1.0.1"
 
 projects[imagex_files][type] = "module"
 projects[imagex_files][subdir] = "imagex/modules"

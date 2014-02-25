@@ -391,7 +391,7 @@ projects[imagex_panels][type] = "module"
 projects[imagex_panels][subdir] = "imagex/modules"
 projects[imagex_panels][download][type] = "git"
 projects[imagex_panels][download][url] = "git@github.com:imagex/imagex_panels.git"
-projects[imagex_panels][download][tag] = "7.x-1.0.0-dev1"
+projects[imagex_panels][download][tag] = "7.x-1.0.0-dev2"
 
 projects[imagex_user_roles][type] = "module"
 projects[imagex_user_roles][subdir] = "imagex/modules"

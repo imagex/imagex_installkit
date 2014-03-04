@@ -403,7 +403,7 @@ projects[imagex_user_permissions][type] = "module"
 projects[imagex_user_permissions][subdir] = "imagex/modules"
 projects[imagex_user_permissions][download][type] = "git"
 projects[imagex_user_permissions][download][url] = "git@github.com:imagex/imagex_user_permissions.git"
-projects[imagex_user_permissions][download][tag] = "7.x-1.0"
+projects[imagex_user_permissions][download][tag] = "7.x-1.0.0-dev2"
 
 projects[imagex_vocabulary_tags][type] = "module"
 projects[imagex_vocabulary_tags][subdir] = "imagex/modules"

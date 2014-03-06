@@ -16,3 +16,5 @@ projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/co
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/undefined-menu-translate-notice-951098-50.patch"
 ; Introduces a new alter hook for UUID Menu Links module
 projects[drupal][patch][] = "https://raw2.github.com/amcgowanca/drupal_uuid_menu_links/7.x-0.5.2/patches/menu_get_object-load-type-alter.patch"
+; Allows for a no time limit of max_execution_time to persist if previously set.
+projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/drupal_set_time_limit.patch"

@@ -80,6 +80,7 @@ dependencies[] = special_menu_items
 dependencies[] = taxonomy_access_fix
 dependencies[] = token
 dependencies[] = uuid
+dependencies[] = uuid_helper
 dependencies[] = uuid_features
 dependencies[] = uuid_features_helper
 dependencies[] = uuid_menu_links

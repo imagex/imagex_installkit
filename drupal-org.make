@@ -422,7 +422,7 @@ projects[imagex_widgets][type] = "module"
 projects[imagex_widgets][subdir] = "imagex/modules"
 projects[imagex_widgets][download][type] = "git"
 projects[imagex_widgets][download][url] = "git@github.com:imagex/imagex_widgets.git"
-projects[imagex_widgets][download][tag] = "7.x-1.0"
+projects[imagex_widgets][download][tag] = "7.x-1.0.0-dev1"
 
 projects[imagex_workflow][type] = "module"
 projects[imagex_workflow][subdir] = "imagex/modules"

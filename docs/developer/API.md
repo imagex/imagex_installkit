@@ -4,7 +4,7 @@
 
 * [hook_imagex_installkit_install_tasks()](#hook_imagex_installkit_install_tasks)
 * [hook_imagex_installkit_install_tasks_alter(array &$tasks)](#hook_imagex_installkit_install_tasks_alterarray-tasks)
-* [hook_imagex_installkit_install_profile_modules_alter(array &$required, array &$non_required)](#hook_imagex_installkit_install_profile_modules_alterarray-required-array-non_requiredc)
+* [hook_imagex_installkit_install_profile_modules_alter(array &$required, array &$non_required)](#hook_imagex_installkit_install_profile_modules_alterarray-required-array-non_required)
 * [hook_imagex_installkit_install_block_info()](#hook_imagex_installkit_install_block_info)
 * [hook_imagex_installkit_default_theme()](#hook_imagex_installkit_default_theme)
 

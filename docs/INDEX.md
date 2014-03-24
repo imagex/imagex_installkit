@@ -1,3 +1,7 @@
 ## ImageX Installkit Documentation
 
-A placeholder for all ImageX InstallKit documentation.
+### Table of Contents
+
+#### Developer Documentation
+
+* [Hooks](developer/Hooks.md)

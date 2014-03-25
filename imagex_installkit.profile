@@ -16,6 +16,16 @@
 define('IMAGEX_INSTALLKIT_WATCHDOG_TYPE', 'imagex_installkit');
 
 /**
+ * Denotes the core default administrator role.
+ */
+define('IMAGEX_INSTALLKIT_ADMINISTRATOR_ROLE', 'administrator');
+
+/**
+ * Denotes the core admin (uid = 1) user identifier.
+ */
+define('IMAGEX_INSTALLKIT_ADMINISTRATOR_UID', 1);
+
+/**
  * Implements hook_flush_caches().
  */
 function imagex_installkit_flush_caches() {

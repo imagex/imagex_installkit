@@ -23,9 +23,12 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
    */
   public function execute() {
     if (module_exists('user')) {
+      // Include ImageX User Roles so that constants may be used.
+      module_load_include('module', 'imagex_user_roles');
+
       // Create the default role.
       $admin_role = new stdClass();
-      $admin_role->name = 'administrator';
+      $admin_role->name = IMAGEX_USER_ROLES_ADMINISTRATOR_ROLE;
       $admin_role->weight = 2;
       user_role_save($admin_role);
       user_role_grant_permissions($admin_role->rid, array_keys(

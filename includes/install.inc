@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This file is part of ImageX InstallKit.
  *
  * (c) ImageX Media Inc. (www.imagexmedia.com)
@@ -23,7 +24,7 @@ define('IMAGEX_INSTALLKIT_INSTALLOP_DEFAULT_TASKS', 'default tasks');
 /**
  * Bootstraps the installation tasks by altering core install tasks.
  * 
- * @param array tasks
+ * @param array $tasks
  *   An array of installation tasks to be invoked. Allows altering.
  * @param array $install_state
  *   An array of the current installation state.
@@ -53,6 +54,11 @@ function imagex_installkit_install_bootstrap(&$tasks, &$install_state) {
     'install_import_locales' => $original_tasks['install_import_locales'],
     'install_configure_form' => $original_tasks['install_configure_form'],
     'install_import_locales_remaining' => $original_tasks['install_import_locales_remaining'],
+    /* 'install_features_revert' => array(
+      'type' => 'normal',
+      'display_name' => st('Features Revert'),
+      'function' => 'imagex_installkit_install_task_features_revert',
+    ), */
     'install_finished' => $original_tasks['install_finished'],
   );
   unset($original_tasks);
@@ -132,21 +138,23 @@ function imagex_installkit_install_profile_modules_finished() {
 /**
  * Handles the core installation of tasks defined by an installation profile.
  *
- * @param $install_state
+ * @param array $install_state
  *   An array of the current installation state.
  *
  * @return array
  *   Returns an array of batch information for performing the task execution.
  */
-// TODO: Need to add the retrieval of all defined install tasks.
 function imagex_installkit_install_profile_tasks(&$install_state) {
+  // TODO: Need to add the retrieval of all defined install tasks.
   $operations = array();
 
   // Attach the default configuration after the module installations.
-  $operations['default_tasks'] = array('imagex_installkit_install_task_execution_handler', array(
-    'ImagexInstallKitInstallDefaultsTask',
-    array(),
-  ));
+  $operations['default_tasks'] = array('imagex_installkit_install_task_execution_handler',
+    array(
+      'ImagexInstallKitInstallDefaultsTask',
+      array(),
+    ),
+  );
 
   // Allow inheritable profiles to alter the installation tasks.
   imagex_installkit_profile_alter('imagex_installkit_install_profile_tasks', $operations);
@@ -194,6 +202,16 @@ function imagex_installkit_install_finished(&$install_state) {
 }
 
 /**
+ * A simply callback for invoking ImagexInstallKitInstallFeaturesRevertTask.
+ *
+ * @param array $install_state
+ *   An array of the current installation state.
+ */
+function imagex_installkit_install_task_features_revert(&$install_state) {
+  imagex_installkit_install_task_execution_handler('ImagexInstallKitInstallFeaturesRevertTask', array(), $install_state);
+}
+
+/**
  * Handles the execution of a single installation task.
  * 
  * @param string $classname
@@ -209,8 +227,8 @@ function imagex_installkit_install_finished(&$install_state) {
  */
 function imagex_installkit_install_task_execution_handler($classname, array $arguments, &$context) {
   try {
-    // Attempt to include the class file, imagex_installkit_load_include will return FALSE
-    // if the file was unable to be included for whatever reason.
+    // Attempt to include the class file, imagex_installkit_load_include will
+    // return FALSE if the file was unable to be included for whatever reason.
     if (!imagex_installkit_load_include('inc', 'includes/' . $classname)) {
       throw new ImagexInstallKitException(st('Unable to include ImagexInstallKitInstallTask class @classname.', array(
         '@classname' => $classname,
@@ -225,7 +243,8 @@ function imagex_installkit_install_task_execution_handler($classname, array $arg
         '@classname' => $classname,
       )));
     }
-    // Ensure the task is instantiatable prior to continuing, if not throw an exception.
+    // Ensure the task is instantiatable prior to continuing, if not throw
+    // an exception.
     if (!$reflection->isInstantiable()) {
       throw new ImagexInstallKitException(st('Install task @classname is not instantiatable.', array('@classname' => $classname)));
     }
@@ -245,12 +264,13 @@ function imagex_installkit_install_task_execution_handler($classname, array $arg
 }
 
 /**
- * Initializes the module install operations, retrieving modules and creating batch.
+ * Initializes the module install operations, retrieving and creating batch.
  *
  * @param array $install_state
  *   The current install state.
+ *
  * @param array $operations
- *   An array of batch operations to populate with module install, passed by reference.
+ *   An array of batch operations to populate with module install.
  */
 function _imagex_installkit_install_profile_modules(&$install_state, &$operations) {
   $modules = variable_get('install_profile_modules', array());
@@ -266,8 +286,8 @@ function _imagex_installkit_install_profile_modules(&$install_state, &$operation
       'name' => $install_state['profiles'][$i + 1],
     );
   }
-  // The absolute root profile (e.g. imagex_installkit) does not get its required
-  // flag set to a boolean false in the for loop above; set it here.
+  // The absolute root profile (e.g. imagex_installkit) does not get its
+  // required flag set to a boolean false in the for loop above; set it here.
   $files[$install_state['profiles'][$profile_count - 1]]->info['required'] = FALSE;
 
   // Add modules that other modules depend on.
@@ -278,7 +298,8 @@ function _imagex_installkit_install_profile_modules(&$install_state, &$operation
   }
   unset($module);
 
-  // Always install required modules first. Respect the dependencies between the modules.
+  // Always install required modules first. Respect the dependencies between
+  // the modules.
   $required = array();
   $non_required = array();
   $modules = array_unique($modules);
@@ -303,10 +324,12 @@ function _imagex_installkit_install_profile_modules(&$install_state, &$operation
   $modules = $required + $non_required;
   foreach ($modules as $module => $weight) {
     $key = IMAGEX_INSTALLKIT_INSTALLOP_MODULE . ':' . $module;
-    $operations[$key] = array('imagex_installkit_install_task_execution_handler', array(
-      'ImagexInstallKitInstallModuleTask',
-      array('module' => $module, 'module name' => $files[$module]->info['name']),
-    ));
+    $operations[$key] = array('imagex_installkit_install_task_execution_handler',
+      array(
+        'ImagexInstallKitInstallModuleTask',
+        array('module' => $module, 'module name' => $files[$module]->info['name']),
+      ),
+    );
   }
   unset($weight, $modules);
 }

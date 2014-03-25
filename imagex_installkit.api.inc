@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This file is part of ImageX InstallKit.
  *
  * (c) ImageX Media Inc. (www.imagexmedia.com)
@@ -68,6 +69,7 @@ function hook_imagex_installkit_install_profile_modules_alter(array &$required, 
  * Returns a multi-dimensional array of block settings information.
  *
  * @return array
+ *   Returns an array of block data to initialize on installation.
  */
 function hook_imagex_installkit_install_block_info() {
   // TODO: Write better documentation.

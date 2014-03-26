@@ -22,39 +22,6 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
    * {@inheritDoc}
    */
   public function execute() {
-    if (module_exists('user')) {
-      // Include ImageX User Roles so that constants may be used.
-      module_load_include('module', 'imagex_user_roles');
-
-      // Create the default role.
-      $admin_role = new stdClass();
-      $admin_role->name = IMAGEX_USER_ROLES_ADMINISTRATOR_ROLE;
-      $admin_role->weight = 2;
-      user_role_save($admin_role);
-      user_role_grant_permissions($admin_role->rid, array_keys(
-        module_invoke_all('permission')
-      ));
-
-      // Assign the admin (user id = 1) to admin role.
-      db_insert('users_roles')
-        ->fields(array(
-          'uid' => 1,
-          'rid' => $admin_role->rid,
-        ))->execute();
-
-      // Disallow visitor accounts to be automatically created.
-      variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
-    }
-
-    // Setup the absolute basics, starting with the admin theme.
-    db_update('system')
-      ->fields(array('status' => 1))
-      ->condition('type', 'theme')
-      ->condition('name', 'seven')
-      ->execute();
-    variable_set('admin_theme', 'seven');
-    variable_set('node_admin_theme', '1');
-
     // Disable bartik, it is no longer needed.
     theme_disable(array('bartik'));
 

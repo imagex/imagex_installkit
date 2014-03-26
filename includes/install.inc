@@ -67,8 +67,19 @@ function imagex_installkit_install_bootstrap(&$tasks, &$install_state) {
   $tasks['install_select_locale']['run'] = INSTALL_TASK_SKIP;
   $install_state['parameters']['locale'] = 'en';
   // Alter the callback function for module installation and finished tasks.
+  $tasks['install_system_module']['function'] = 'imagex_installkit_install_system_module';
   $tasks['install_profile_modules']['function'] = 'imagex_installkit_install_profile_modules';
   $tasks['install_finished']['function'] = 'imagex_installkit_install_finished';
+}
+
+/**
+ * Installation task, installing the Drupal system module.
+ *
+ * @param array $install_state
+ *   An array of the current installation state.
+ */
+function imagex_installkit_install_system_module(&$install_state) {
+  imagex_installkit_install_task_execution_handler('ImagexInstallKitInstallSystemModuleTask', array(), $install_state);
 }
 
 /**

@@ -18,7 +18,7 @@ define('IMAGEX_INSTALLKIT_WATCHDOG_TYPE', 'imagex_installkit');
 /**
  * Denotes the core default administrator role.
  */
-define('IMAGEX_INSTALLKIT_ADMINISTRATOR_ROLE', 'administrator');
+define('IMAGEX_INSTALLKIT_USER_ADMINISTRATOR_ROLE', 'administrator');
 
 /**
  * Denotes the core admin (uid = 1) user identifier.

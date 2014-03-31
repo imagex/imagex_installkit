@@ -58,6 +58,7 @@ dependencies[] = entity_translation
 dependencies[] = features
 dependencies[] = features_override
 dependencies[] = features_translations
+dependencies[] = globalredirect
 dependencies[] = i18n
 dependencies[] = i18n_menu
 dependencies[] = i18n_string

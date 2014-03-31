@@ -67,6 +67,7 @@ function imagex_installkit_load_include($type, $name) {
  */
 function imagex_installkit_install_tasks_alter(&$tasks, $install_state) {
   global $install_state;
+  imagex_installkit_load_include('inc', 'includes/system');
   imagex_installkit_load_include('inc', 'includes/install');
   imagex_installkit_install_bootstrap($tasks, $install_state);
 }
@@ -183,7 +184,7 @@ function imagex_installkit_profile_alter($type, &$data, &$context1 = NULL, &$con
 /**
  * Returns a string representation for Drush log for watchdog severity.
  * 
- *  @param $severity
+ * @param $severity
  *   A Drupal core's WATCHDOG severity level.
  *
  * @return string

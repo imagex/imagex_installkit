@@ -43,7 +43,7 @@ abstract class ImagexInstallKitInstallTask implements ImagexInstallKitInstallTas
    * {@inheritDoc}
    */
   final public function setContext(array &$context) {
-    $this->context = $context;
+    $this->context = &$context;
     return $this;
   }
 

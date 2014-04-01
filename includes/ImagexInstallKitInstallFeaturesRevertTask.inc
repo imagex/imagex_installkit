@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This file is part of ImageX InstallKit.
  *
  * (c) ImageX Media Inc. (www.imagexmedia.com)
@@ -19,7 +20,7 @@
  */
 class ImagexInstallKitInstallFeaturesRevertTask extends ImagexInstallKitInstallTask {
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function execute() {
     if (!module_exists('features')) {

@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This file is part of ImageX InstallKit.
  *
  * (c) ImageX Media Inc. (www.imagexmedia.com)
@@ -19,7 +20,7 @@
  */
 class ImagexInstallKitInstallSystemModuleTask extends ImagexInstallKitInstallTask {
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function execute() {
     // Invoke Drupal's core system module installation task.

@@ -5,9 +5,8 @@ core = 7.x
 version = 7.x-1.x-dev
 
 ; Files
-files[] = includes/block.inc
-files[] = includes/install.inc
-files[] = includes/system.inc
+files[] = includes/imagex_installkit.install.inc
+files[] = includes/imagex_installkit.system.inc
 files[] = includes/ImagexInstallKitException.inc
 files[] = includes/ImagexInstallKitInstallTaskInterface.inc
 files[] = includes/ImagexInstallKitInstallTask.inc

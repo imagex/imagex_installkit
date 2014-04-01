@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This file is part of ImageX InstallKit.
  *
  * (c) ImageX Media Inc. (www.imagexmedia.com)
@@ -9,6 +10,8 @@
  *
  * Drupal is a registered trademark of Dries Buytaert (www.buytaert.com).
  */
+
+require_once 'includes/imagex_installkit.system.inc';
 
 /**
  * Defines the watchdog type.
@@ -26,14 +29,21 @@ define('IMAGEX_INSTALLKIT_USER_ADMINISTRATOR_ROLE', 'administrator');
 define('IMAGEX_INSTALLKIT_ADMINISTRATOR_UID', 1);
 
 /**
- * Implements hook_flush_caches().
+ * Implements hook_install_tasks_alter().
  */
-function imagex_installkit_flush_caches() {
-  if (imagex_installkit_block_rebuild_on_flush_caches()) {
-    imagex_installkit_load_include('inc', 'includes/block');
-    imagex_installkit_block_rebuild();
-  }
-  return array();
+function imagex_installkit_install_tasks_alter(&$tasks, $install_state) {
+  global $install_state;
+  imagex_installkit_load_include('inc', 'includes/imagex_installkit.install');
+  imagex_installkit_install_bootstrap($tasks, $install_state);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for install_configure_form().
+ *
+ * Allows the profile to alter the site configuration form.
+ */
+function imagex_installkit_form_install_configure_form_alter(&$form, $form_state) {
+  $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
 }
 
 /**
@@ -63,39 +73,13 @@ function imagex_installkit_load_include($type, $name) {
 }
 
 /**
- * Implements hook_install_tasks_alter().
- */
-function imagex_installkit_install_tasks_alter(&$tasks, $install_state) {
-  global $install_state;
-  imagex_installkit_load_include('inc', 'includes/system');
-  imagex_installkit_load_include('inc', 'includes/install');
-  imagex_installkit_install_bootstrap($tasks, $install_state);
-}
-
-/**
- * Implements hook_form_FORM_ID_alter() for install_configure_form().
- *
- * Allows the profile to alter the site configuration form.
- */
-function imagex_installkit_form_install_configure_form_alter(&$form, $form_state) {
-  $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
-}
-
-/**
- * Implements hook_imagex_installkit_default_theme().
- */
-function imagex_installkit_imagex_installkit_default_theme() {
-  return 'parrot';
-}
-
-/**
  * Returns an array of installation profiles, in reverse order.
  *
  * The returned array of installation profiles allow for proper execution
  * hierarchy, for example this base installation profile will be the last in
  * the returned array vs. the "concrete" instances will be first.
  *
- * @return array $profiles
+ * @return array
  *   Returns an array of installation profile names.
  */
 function imagex_installkit_get_install_profiles() {
@@ -109,13 +93,24 @@ function imagex_installkit_get_install_profiles() {
 }
 
 /**
- * Returns a boolean indicating whether or not blocks should be rebuilt.
+ * Pass alterable variables to PROFILE_TYPE_alter().
  *
- * @return boolean
- *   Returns TRUE if blocks should be rebuilt on cache flush, otherwise FALSE.
+ * @param string $type
+ *   The type to alter.
+ * @param mixed $data
+ *   The data to alter, passed by reference.
+ * @param mixed $context1
+ *   An additional variable that is passed by reference, optional.
+ * @param mixed $context2
+ *   An additional variable that is passed by reference, optional.
  */
-function imagex_installkit_block_rebuild_on_flush_caches() {
-  return variable_get('imagex_installkit_block_rebuild_on_cache_flushes', TRUE);
+function imagex_installkit_profile_alter($type, &$data, &$context1 = NULL, &$context2 = NULL) {
+  foreach (imagex_installkit_get_install_profiles() as $profile) {
+    $function = $profile . '_' . $type . '_alter';
+    if (function_exists($function)) {
+      $function($data, $context1, $context2);
+    }
+  }
 }
 
 /**
@@ -161,30 +156,9 @@ function imagex_installkit_watchdog(array $log_entry) {
 }
 
 /**
- * Pass alterable variables to PROFILE_TYPE_alter().
- *
- * @param string $type
- *   The type to alter.
- * @param mixed $data
- *   The data to alter, passed by reference.
- * @param mixed $context1
- *   An additional variable that is passed by reference, optional.
- * @param mixed $context2
- *   An additional variable that is passed by reference, optional.
- */
-function imagex_installkit_profile_alter($type, &$data, &$context1 = NULL, &$context2 = NULL) {
-  foreach (imagex_installkit_get_install_profiles() as $profile) {
-    $function = $profile . '_' . $type . '_alter';
-    if (function_exists($function)) {
-      $function($data, $context1, $context2);
-    }
-  }
-}
-
-/**
  * Returns a string representation for Drush log for watchdog severity.
- * 
- * @param $severity
+ *
+ * @param int $severity
  *   A Drupal core's WATCHDOG severity level.
  *
  * @return string
@@ -206,24 +180,5 @@ function _imagex_installkit_watchdog_severity_string($severity) {
     case WATCHDOG_DEBUG:
     default:
       return 'notice';
-  }
-}
-
-/**
- * Implements hook_imagex_installkit_install_profile_modules_alter().
- */
-function imagex_installkit_imagex_installkit_install_profile_modules_alter(&$required, &$non_required) {
-  // TODO: Improve the re-ordering of installkit's module install order of ops.
-  // The UUID module does not require the dependencies for
-  // the File module and therefore due to regular Drupal sorting and ordering
-  // during the module list rebuild, UUID will be installed prior to File and as a
-  // result the File entity will not have the UUID column added. This is problematic.
-  if ($non_required['uuid'] > $non_required['file']) {
-    // Swap the weights of the UUID and File should UUID's weight be
-    // greater then the File contrib module.
-    $weight = $non_required['uuid'];
-    $non_required['uuid'] = $non_required['file'];
-    $non_required['file'] = $weight;
-    unset($weight);
   }
 }

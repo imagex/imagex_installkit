@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This file is part of ImageX InstallKit.
  *
  * (c) ImageX Media Inc. (www.imagexmedia.com)
@@ -19,16 +20,18 @@
  */
 abstract class ImagexInstallKitInstallTask implements ImagexInstallKitInstallTaskInterface {
   /**
+   * An array of arguments for processing.
+   *
    * @var array
-   *   An array of arguments for processing.
    */
   protected $arguments = array();
 
   /**
+   * An array of contextual information.
+   *
    * @var array
-   *   An array of contextual information.
    */
-  protected $context = null;
+  protected $context = NULL;
 
   /**
    * Creates a new instance of ImagexInstallTask.
@@ -40,15 +43,15 @@ abstract class ImagexInstallKitInstallTask implements ImagexInstallKitInstallTas
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   final public function setContext(array &$context) {
-    $this->context = $context;
+    $this->context = &$context;
     return $this;
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   final public function setArguments(array $arguments) {
     $this->arguments = $arguments;

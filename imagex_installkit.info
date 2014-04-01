@@ -5,8 +5,8 @@ core = 7.x
 version = 7.x-1.x-dev
 
 ; Files
-files[] = includes/block.inc
-files[] = includes/install.inc
+files[] = includes/imagex_installkit.install.inc
+files[] = includes/imagex_installkit.system.inc
 files[] = includes/ImagexInstallKitException.inc
 files[] = includes/ImagexInstallKitInstallTaskInterface.inc
 files[] = includes/ImagexInstallKitInstallTask.inc
@@ -107,7 +107,6 @@ dependencies[] = imagex_files
 dependencies[] = imagex_media
 dependencies[] = imagex_metatag
 dependencies[] = imagex_page
-dependencies[] = imagex_page_workflow
 dependencies[] = imagex_panels
 dependencies[] = imagex_user_roles
 dependencies[] = imagex_vocabulary_tags

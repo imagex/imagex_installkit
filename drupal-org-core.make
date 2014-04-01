@@ -12,6 +12,8 @@ projects[drupal][version] = "7.26"
 ; Ensure that each patch is well documented here as to why it is being applied.
 ; Enables multi-profile inheritance with deep dependency checking.
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/inheritable-profiles/1356276-D7-inhertiable-profiles-multi-enforce-dependencies.patch"
+; Allow for profiles to be loaded during install in system_list().
+projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/drupal-system_list-include_profiles_during_install_as_modules.patch"
 ; Resolves the undefined tab_root_map variable in menu translate problems.
 projects[drupal][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/core/undefined-menu-translate-notice-951098-50.patch"
 ; Introduces a new alter hook for UUID Menu Links module

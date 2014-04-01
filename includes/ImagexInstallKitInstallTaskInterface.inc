@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This file is part of ImageX InstallKit.
  *
  * (c) ImageX Media Inc. (www.imagexmedia.com)
@@ -22,10 +23,11 @@ interface ImagexInstallKitInstallTaskInterface {
    * Sets the contextual information for this task.
    *
    * @access public
+   *
    * @param array $context
    *   An array of contextual information.
    *
-   * @return $this
+   * @return ImagexInstallKitInstallTaskInterface
    *   Returns this instance of the ImagexInstallTask.
    */
   public function setContext(array &$context);
@@ -34,10 +36,11 @@ interface ImagexInstallKitInstallTaskInterface {
    * Sets the arguments to be used within the `execute()` of this task.
    *
    * @access public
+   *
    * @param array $arguments
    *   A keyed array of arguments to set.
    *
-   * @return $this
+   * @return ImagexInstallKitInstallTaskInterface
    *   Returns this instance of the ImagexInstallTask.
    */
   public function setArguments(array $arguments);

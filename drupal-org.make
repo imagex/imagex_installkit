@@ -359,19 +359,6 @@ projects[xmlsitemap][type] = "module"
 projects[xmlsitemap][subdir] = "contrib"
 projects[xmlsitemap][version] = "2.0-rc2"
 
-; Contributed themes.
-projects[shiny][type] = "theme"
-projects[shiny][version] = "1.3"
-projects[mothership][type] = "theme"
-projects[mothership][version] = "2.10"
-projects[mothership][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/themes/mothership/Add-views-classes-2033235-16.patch"
-projects[mothership][patch][] = "https://raw.github.com/imagex/imagex_patches/7.x/themes/mothership/template_mothership_preprocess.patch"
-projects[mothership][patch][] = "https://raw2.github.com/imagex/imagex_patches/7.x/themes/mothership/maintenance-page-template.patch"
-projects[parrot][type] = "theme"
-projects[parrot][version] = "1.x-dev"
-
-; Libraries.
-
 ; Download the ImageX modules and components.
 projects[imagex][type] = "module"
 projects[imagex][download][type] = "git"

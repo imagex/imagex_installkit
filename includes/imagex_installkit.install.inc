@@ -236,7 +236,7 @@ function imagex_installkit_install_task_features_revert(&$install_state) {
  * @throws Exception
  *   Throws an Exception for various reasons.
  */
-function imagex_installkit_install_task_execution_handler($classname, array $arguments, &$context) {
+function imagex_installkit_install_task_execution_handler($classname, array $arguments, array &$context) {
   try {
     // Attempt to include the class file, imagex_installkit_load_include will
     // return FALSE if the file was unable to be included for whatever reason.
@@ -262,9 +262,9 @@ function imagex_installkit_install_task_execution_handler($classname, array $arg
 
     $instance = $reflection->newInstance();
     $reflection->getMethod('setContext')
-      ->invoke($instance, $context);
+      ->invokeArgs($instance, array(&$context));
     $reflection->getMethod('setArguments')
-      ->invoke($instance, $arguments);
+      ->invokeArgs($instance, array($arguments));
     $reflection->getMethod('execute')
       ->invoke($instance);
   }

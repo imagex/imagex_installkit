@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This file is part of ImageX InstallKit.
  *
  * (c) ImageX Media Inc. (www.imagexmedia.com)
@@ -19,12 +20,9 @@
  */
 class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function execute() {
-    // Disable bartik, it is no longer needed.
-    theme_disable(array('bartik'));
-
     // For each profile that is a child of this, attempt to find the
     // default theme by invoking hook_imagex_installkit_default_theme().
     $default_theme = NULL;
@@ -34,22 +32,22 @@ class ImagexInstallKitInstallDefaultsTask extends ImagexInstallKitInstallTask {
         $default_theme = $function();
       }
     }
-    
+
     if ($default_theme) {
+      // Disable bartik, it is no longer needed.
+      theme_disable(array('bartik'));
       // Enable the default theme and set it as a the default.
       theme_enable(array($default_theme));
       variable_set('theme_default', $default_theme);
     }
 
-    // Time to retrieve and configure any defined blocks.
-    imagex_installkit_load_include('inc', 'includes/block');
-    imagex_installkit_block_rebuild(TRUE);
-
-    // If the UUID Menu Links module exists, let's synchronize all links and paths.
+    // If the UUID Menu Links module exists, let's synchronize all links
+    // and paths.
     if (module_exists('uuid_menu_links')) {
       uuid_menu_links_sync();
     }
 
+    // Disable CTools page manager node view by default.
     variable_set('page_manager_node_view_disabled', FALSE);
 
     // Set and share the completion message.

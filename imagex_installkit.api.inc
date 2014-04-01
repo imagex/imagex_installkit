@@ -66,17 +66,6 @@ function hook_imagex_installkit_install_profile_modules_alter(array &$required, 
 }
 
 /**
- * Returns a multi-dimensional array of block settings information.
- *
- * @return array
- *   Returns an array of block data to initialize on installation.
- */
-function hook_imagex_installkit_install_block_info() {
-  // TODO: Write better documentation.
-  return array();
-}
-
-/**
  * Hook to specify the default theme that should be enabled and set.
  *
  * The most derived installation profile's implementation of this hook will be

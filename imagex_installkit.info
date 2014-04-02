@@ -86,7 +86,6 @@ dependencies[] = panopoly_magic
 dependencies[] = pathauto
 dependencies[] = pathologic
 dependencies[] = redirect
-dependencies[] = rel
 dependencies[] = remote_stream_wrapper
 dependencies[] = rules
 dependencies[] = rules_admin

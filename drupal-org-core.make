@@ -3,9 +3,9 @@ core = 7.x
 
 ; Download Drupal core.
 projects[drupal][type] = "core"
-projects[drupal][version] = "7.26"
+projects[drupal][version] = "7.27"
 ; projects[drupal][download][type] = git
-; projects[drupal][download][tag] = "7.26"
+; projects[drupal][download][tag] = "7.27"
 ; projects[drupal][download][url] = http://git.drupal.org/project/drupal.git
 
 ; If patches are to be applied, apply them below by using projects[drupal][patch][].
